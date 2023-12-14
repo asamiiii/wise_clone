@@ -15,10 +15,10 @@ class MainView extends StatefulWidget {
 }
 List<Widget> screens =[
   HomeScreen(),
-  CardScreen(),
-  SendScreen(),
-  RepScreen(),
-  ManageScreen()
+  HomeScreen(),
+  HomeScreen(),
+  HomeScreen(),
+  HomeScreen()
   ];
 class _MainViewState extends State<MainView> {
   int? currentIndex = 0;
