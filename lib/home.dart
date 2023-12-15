@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wise_clone/main.dart';
 import 'package:wise_clone/settings.dart';
+import 'package:wise_clone/trans_list.dart';
 
 List<String> imagesList=[
   'images/1.png',
@@ -49,21 +50,26 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 15,
               ),
-              const Row(
+               Row(
                 children: [
-                  Text(
+                  const Text(
                     'Transactions',
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  Expanded(child: SizedBox()),
-                  Text(
-                    'See all',
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 15,
+                  const Expanded(child: SizedBox()),
+                  GestureDetector(
+                    onTap: () {
+                       Navigator.push(context, MaterialPageRoute(builder:(context) => TransactionsList(),));
+                    },
+                    child: const Text(
+                      'See all',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontSize: 15,
+                      ),
                     ),
                   ),
                 ],
@@ -71,20 +77,13 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 20,
               ),
-              Row(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.grey[100],
-                    child: Icon(
-                      Icons.watch_later_outlined,
-                      color: Colors.grey[500],
-                    ),
-                  ),
-        
-                  const SizedBox(width: 20,),
-                  const Text('No transaction yet',style: TextStyle(color: Colors.grey,fontSize: 18),)
-                ],
-              ),
+              
+              transactionsItem(userName: 'Ahmes Sami',sent: true,mony: '100.0'),
+              SizedBox(height: 10,),
+              transactionsItem(userName: 'Mohammed Badrawy',sent: false,mony: '20.0'),
+              SizedBox(height: 10,),
+              transactionsItem(userName: 'Amr Ahmed',sent: true,mony: '10.50'),
+              
               const SizedBox(
                 height: 40,
               ),
@@ -159,4 +158,32 @@ Widget radiusButton({required String? txt}){
             ),
             child:Text(txt ?? ''),
           );
+}
+
+
+
+Widget transactionsItem({bool? home=true, required String? userName,required bool? sent, required String? mony}){
+  //? Transactions Section
+  return 
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                        radius: home==true? 25 : 30,
+                        backgroundColor: Colors.grey[200],
+                        child:  Icon(sent==true ?Icons.arrow_upward:Icons.arrow_downward),
+                      ),
+        
+                  const SizedBox(width: 20,),
+                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(userName??'',style:  TextStyle(fontSize:home==true? 13:15,fontWeight: FontWeight.bold),),
+                      Text(sent==true?'Sent':'Recive',textAlign: TextAlign.start,style: const TextStyle(color: Colors.grey),)
+                    ],
+                  ),
+                  const Expanded(child: SizedBox()),
+                   Text('$mony USD')
+                ],
+              );
 }
