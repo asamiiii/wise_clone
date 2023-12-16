@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:wise_clone/screens/home.dart';
 
+List<DetailsData> listData=[
+  DetailsData(userName: 'Ahmed Sami',sent: true,ammount: '100.0'),
+   DetailsData(userName: 'Mohammed Badrawy',sent: false,ammount: '9.0'),
+    DetailsData(userName: 'Amr Ahmed',sent: true,ammount: '1.0'),
+     DetailsData(userName: 'Ahmed Sami',sent: true,ammount: '98.0')
+];
+
 class TransactionsList extends StatefulWidget {
   const TransactionsList({super.key});
 
@@ -62,47 +69,17 @@ class _TransactionsListState extends State<TransactionsList> {
                 children: buildCategoryChips(x),
               ),
             ),
-            transactionsItem(
-              context, 
-              home: false,
-              userName: 'Ahmes Sami', sent: true, mony: '100.0'),
-            SizedBox(
-              height: 10,
-            ),
-            transactionsItem(
-              context, 
-              home: false,
-                userName: 'Mohammed Badrawy', sent: false, mony: '20.0'),
-            SizedBox(
-              height: 10,
-            ),
-            transactionsItem(
-              context, 
-              home: false,
-              userName: 'Amr Ahmed', sent: true, mony: '10.50'),
-            SizedBox(
-              height: 10,
-            ),
-            transactionsItem(
-              context, 
-              home: false,
-              userName: 'Ahmes Sami', sent: true, mony: '100.0'),
-            SizedBox(
-              height: 10,
-            ),
-            transactionsItem(
-              context, 
-              home: false,
-                userName: 'Mohammed Badrawy', sent: false, mony: '20.0'),
-            SizedBox(
-              height: 10,
-            ),
-            transactionsItem(
-              context, 
-              home: false,
-              userName: 'Amr Ahmed', sent: true, mony: '10.50'),
-          ],
-        ),
+            Expanded(
+              child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                return transactionsItem(
+                context, 
+                home: false,
+                userName: listData[index].userName, sent: listData[index].sent, mony: listData[index].ammount);
+              }, separatorBuilder: (context, index) => const SizedBox(height: 10,), itemCount: listData.length),
+            )
+          ])
       ),
     );
   }

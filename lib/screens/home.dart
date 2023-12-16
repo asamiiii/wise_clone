@@ -3,6 +3,7 @@ import 'package:wise_clone/main.dart';
 import 'package:wise_clone/screens/settings.dart';
 import 'package:wise_clone/screens/trans_details.dart';
 import 'package:wise_clone/screens/trans_list.dart';
+import 'package:wise_clone/screens/widgets.dart';
 
 List<String> imagesList=[
   'images/1.png',
@@ -79,12 +80,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 20,
               ),
               
-              transactionsItem(context, userName: 'Ahmes Sami',sent: true,mony: '100.0'),
-              SizedBox(height: 10,),
-              transactionsItem(context, userName: 'Mohammed Badrawy',sent: false,mony: '20.0'),
-              SizedBox(height: 10,),
-              transactionsItem(context, userName: 'Amr Ahmed',sent: true,mony: '10.50'),
-              
+              SizedBox(
+                height: 180,
+                child: ListView.separated(
+                  itemCount: 3,
+                  itemBuilder: (context, index) {
+                  return transactionsItem(context, userName: listData[index].userName,mony: listData[index].ammount,sent: listData[index].sent);
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 10,),
+                ),
+              ),
               const SizedBox(
                 height: 40,
               ),
@@ -133,8 +138,12 @@ Widget circlName() {
       padding: const EdgeInsets.all(8),
       child: Stack(
         children: [
-          CircleAvatar(
-              backgroundColor: Colors.grey[200], child:  Text(firstChar??'')),
+          image==null? CircleAvatar(
+              backgroundColor: Colors.grey[200], child:  Text(firstChar??'')):
+              ClipOval(
+                child: Image.file(image!,width: 120,height: 120,fit: BoxFit.fill,),
+              )
+              ,
           Positioned(
             top: 2,
             right: 2,

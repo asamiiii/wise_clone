@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:wise_clone/screens/edit_profile.dart';
 import 'package:wise_clone/screens/home.dart';
+import 'package:wise_clone/screens/widgets.dart';
 String getInitials(String bankAccountName) => bankAccountName.isNotEmpty
     ? bankAccountName.trim().split(RegExp(' +')).map((s) => s[0]).take(2).join()
     : '';
-String? userName = 'Ahmed Sami'; 
+String? userName = 'Un Known'; 
 String? firstChar = getInitials(userName??'');
 
 class SettingsScreen extends StatefulWidget {
@@ -75,14 +79,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 children: [
                   Stack(
                     children: [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundColor: Colors.grey[200],
-                        child:  Text(
-                          firstChar??'',
-                          style: TextStyle(fontSize: 25),
-                        ),
-                      ),
+                      image == null
+                        ? CircleAvatar(
+                            radius: 40,
+                            backgroundColor: Colors.grey[200],
+                            child: Text(
+                              firstChar ?? '',
+                              style: const TextStyle(fontSize: 25),
+                            ),
+                          )
+                        : ClipOval(
+                            child: Image.file(
+                                fit: BoxFit.fill,
+                                image!,
+                                height: 100,
+                                width: 100)),
                       Positioned(
                           bottom: 0,
                           right: 0,
@@ -201,7 +212,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const SizedBox(height: 15,),
             settingsItem('Settings', Icons.settings),
             const SizedBox(height: 15,),
-            settingsItem('Help', Icons.help_rounded),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const EditProfile();
+                },));
+              },
+              child: settingsItem('Help', Icons.help_rounded)),
             const SizedBox(height: 15,),
             settingsItem('Privacy and security', Icons.privacy_tip_rounded),
             const SizedBox(height: 15,),
