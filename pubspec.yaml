@@ -37,7 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   hexcolor: ^3.0.1
   toggle_switch: ^2.1.0
-  dotted_separator: ^1.0.6
+  # dotted_separator: ^1.0.6
 
 dev_dependencies:
   flutter_test:

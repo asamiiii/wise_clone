@@ -2,19 +2,21 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:wise_clone/screens/home.dart';
 
 class TransDetails extends StatefulWidget {
-  const TransDetails({super.key});
-
+   TransDetails({super.key,this.data});
+  DetailsData? data;
   @override
   State<TransDetails> createState() => _TransDetailsState();
 }
 
 class _TransDetailsState extends State<TransDetails> {
   int? currentIndex = 0;
-  List<Widget> sectionsList=[updatesSection(),detailsSection()];
+  
   @override
   Widget build(BuildContext context) {
+    List<Widget> sectionsList=[updatesSection(),detailsSection(data: widget.data)];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -71,27 +73,27 @@ class _TransDetailsState extends State<TransDetails> {
                     CircleAvatar(
                       radius: 45,
                       backgroundColor: Colors.grey[300],
-                      child: const Icon(Icons.arrow_upward),
+                      child:  Icon(widget.data?.sent==true?Icons.arrow_upward:Icons.arrow_downward),
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    const Text(
-                      'Sent',
+                     Text(
+                      widget.data?.sent==true? 'Sent':'Recived',
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    const Text(
-                      '11.90 USD',
-                      style: TextStyle(
+                     Text(
+                      '${widget.data?.ammount} USD',
+                      style: const TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Text(
-                      'Ahmed Sami',
-                      style: TextStyle(color: Colors.black54),
+                     Text(
+                      '${widget.data?.userName}',
+                      style: const TextStyle(color: Colors.black54),
                     ),
                     const SizedBox(
                       height: 20,
@@ -203,12 +205,12 @@ Widget updatesSection() {
   );
 }
 
-Widget detailsSection (){
+Widget detailsSection ({DetailsData? data}){
   return SingleChildScrollView(
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       color: Colors.white,
-      child: const Column(
+      child:  Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -228,12 +230,12 @@ Widget detailsSection (){
           Row(
             children: [
               Text(
-                      'You have sent',
+                      data?.sent==true? 'You have sent':'You have recived',
                       // style: TextStyle(color: Colors.black54),
                     ),
                     Expanded(child: SizedBox()),
                     Text(
-                      '10USD',
+                      '${data?.ammount}USD',
                       // style: TextStyle(color: Colors.black54),
                     ),
             ],
@@ -259,12 +261,12 @@ SizedBox(height: 15,),
           Row(
             children: [
               Text(
-                      'fatima benhabi has received',
+                      data?.sent==false? '${data?.userName} has received':'${data?.userName} has Sent',
                       // style: TextStyle(color: Colors.black54),
                     ),
                     Expanded(child: SizedBox()),
                     Text(
-                      '10USD',
+                      '${data?.ammount}USD',
                       // style: TextStyle(color: Colors.black54),
                     ),
             ],

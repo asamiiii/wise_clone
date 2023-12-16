@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wise_clone/screens/home.dart';
+String getInitials(String bankAccountName) => bankAccountName.isNotEmpty
+    ? bankAccountName.trim().split(RegExp(' +')).map((s) => s[0]).take(2).join()
+    : '';
+String? userName = 'Ahmed Sami'; 
+String? firstChar = getInitials(userName??'');
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -73,8 +78,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       CircleAvatar(
                         radius: 40,
                         backgroundColor: Colors.grey[200],
-                        child: const Text(
-                          'KF',
+                        child:  Text(
+                          firstChar??'',
                           style: TextStyle(fontSize: 25),
                         ),
                       ),
@@ -100,8 +105,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(
                 height: 15,
               ),
-              const Text(
-                'Ahmed Sami',
+               Text(
+                userName??'',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
               ),
               const SizedBox(

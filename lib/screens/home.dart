@@ -134,7 +134,7 @@ Widget circlName() {
       child: Stack(
         children: [
           CircleAvatar(
-              backgroundColor: Colors.grey[200], child: const Text('As')),
+              backgroundColor: Colors.grey[200], child:  Text(firstChar??'')),
           Positioned(
             top: 2,
             right: 2,
@@ -161,14 +161,20 @@ Widget radiusButton({required String? txt}){
           );
 }
 
+class DetailsData{
+  String? userName;
+  String? ammount;
+  bool? sent;
 
+  DetailsData({this.userName,this.ammount,this.sent});
+}
 
 Widget transactionsItem(BuildContext context,{bool? home=true, required String? userName,required bool? sent, required String? mony}){
   //? Transactions Section
   return 
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => const TransDetails(),));
+                  Navigator.push(context,MaterialPageRoute(builder: (context) =>  TransDetails(data: DetailsData(userName: userName,sent: sent,ammount: mony)),));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
