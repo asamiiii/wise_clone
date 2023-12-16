@@ -21,7 +21,7 @@ class _TransDetailsState extends State<TransDetails> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: HexColor('#eeefea'),
-        // forceMaterialTransparency: true,
+        forceMaterialTransparency: true,
         // automaticallyImplyLeading:false ,
         leading: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),

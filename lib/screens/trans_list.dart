@@ -73,10 +73,11 @@ class _TransactionsListState extends State<TransactionsList> {
               child: ListView.separated(
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
+                  final reversedIndex = listData.length - 1 - index;
                 return transactionsItem(
                 context, 
                 home: false,
-                userName: listData[index].userName, sent: listData[index].sent, mony: listData[index].ammount);
+                userName: listData[reversedIndex].userName, sent: listData[reversedIndex].sent, mony: listData[reversedIndex].ammount);
               }, separatorBuilder: (context, index) => const SizedBox(height: 10,), itemCount: listData.length),
             )
           ])

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:wise_clone/screens/home.dart';
 import 'package:wise_clone/screens/main_view.dart';
 import 'package:wise_clone/screens/settings.dart';
+import 'package:wise_clone/screens/trans_list.dart';
 import 'package:wise_clone/screens/widgets.dart';
 
 class EditProfile extends StatefulWidget {
@@ -11,124 +13,260 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  bool? sent =true;
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(),
-      body: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Stack(
-                  children: [
-                    image == null
-                        ? CircleAvatar(
-                            radius: 40,
-                            backgroundColor: Colors.grey[200],
-                            child: Text(
-                              firstChar ?? '',
-                              style: const TextStyle(fontSize: 25),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Stack(
+                    children: [
+                      image == null
+                          ? CircleAvatar(
+                              radius: 40,
+                              backgroundColor: Colors.grey[200],
+                              child: Text(
+                                firstChar ?? '',
+                                style: const TextStyle(fontSize: 25),
+                              ),
+                            )
+                          : ClipOval(
+                              child: Image.file(
+                                  fit: BoxFit.fill,
+                                  image!,
+                                  height: 100,
+                                  width: 100)),
+                      Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              border: Border.all(color: Colors.white, width: 2),
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                          )
-                        : ClipOval(
-                            child: Image.file(
-                                fit: BoxFit.fill,
-                                image!,
-                                height: 100,
-                                width: 100)),
-                    Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          padding: const EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            border: Border.all(color: Colors.white, width: 2),
-                            borderRadius: BorderRadius.circular(20),
+                            child: const Icon(
+                              Icons.camera_alt_outlined,
+                              size: 20,
+                            ),
+                          ))
+                    ],
+                  ),
+                ],
+              ),
+              TextButton(
+                  onPressed: () async {
+                    await getImageFromFiles();
+                    setState(() {});
+                    // ignore: use_build_context_synchronously
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MainView(),
+                        ));
+                  },
+                  child: const Text('Change')),
+              const SizedBox(
+                height: 30,
+              ),
+              Text(
+                userName ?? '',
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              ),
+              TextButton(
+                  onPressed: () {
+                    TextEditingController controller = TextEditingController();
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        content: SizedBox(
+                          width: 500,
+                          height: 200,
+                          child: Column(
+                            children: [
+                              AppTextField(
+                                  controller: controller,
+                                  keyboardType: TextInputType.text,
+                                  icon: const Icon(Icons.abc),
+                                  hintText: 'Change Your Name',
+                                  label: 'User Name'),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                            ],
                           ),
-                          child: const Icon(
-                            Icons.camera_alt_outlined,
-                            size: 20,
+                        ),
+                        actions: [
+                          TextButton(
+                            child: Text('Edit'),
+                            onPressed: () async {
+                              userName = controller.text;
+                              firstChar = getInitials(controller.text);
+                              setState(() {});
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const MainView(),
+                                  ));
+                            },
                           ),
-                        ))
-                  ],
-                ),
-              ],
-            ),
-            TextButton(
-                onPressed: () async{
-                  await getImageFromFiles();
-                  setState(() {
-                    
-                  });
-                  // ignore: use_build_context_synchronously
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => const MainView(),));
-                  
-                },
-                child: const Text('Change')),
-            const SizedBox(
-              height: 30,
-            ),
-            Text(
-              userName ?? '',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-            ),
-            TextButton(
-                onPressed: () {
-                  TextEditingController controller = TextEditingController();
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      content: SizedBox(
-                        width: 500,
-                        height: 200,
-                        child: Column(
-                          children: [
-                            AppTextField(
-                                controller: controller,
-                                keyboardType: TextInputType.text,
-                                icon: const Icon(Icons.abc),
-                                hintText: 'Change Your Name',
-                                label: 'User Name'),
-                            const SizedBox(
-                              height: 20,
+                          TextButton(
+                            child: Text('Cancel'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                        title: Text('Edit User Name'),
+                      ),
+                    );
+                  },
+                  child: const Text('Change')),
+              SizedBox(
+                height: 100,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    child: const Text('Add Transaction'),
+                    onPressed: () {
+                      TextEditingController toController = TextEditingController();
+                      TextEditingController valueController = TextEditingController();
+                      
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          content: SizedBox(
+                            width: 500,
+                            height: 300,
+                            child: Column(
+                              children: [
+                                AppTextField(
+                                    controller: toController,
+                                    keyboardType: TextInputType.text,
+                                    icon: const Icon(Icons.abc),
+                                    hintText: 'To',
+                                    label: 'Name'),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                AppTextField(
+                                    controller: valueController,
+                                    keyboardType: TextInputType.text,
+                                    icon: const Icon(Icons.abc),
+                                    hintText: 'value',
+                                    label: 'value'),
+                                StatefulBuilder(
+                                  builder:(context, setState) =>  Row(
+                                    children: [
+                                      const Text('Sent'),
+                                      Checkbox(
+                                            checkColor: Colors.white,
+                                            // fillColor: MaterialStateProperty.resolveWith(getColor),
+                                            value: sent,
+                                            onChanged: (bool? value) {
+                                              setState(() {
+                                                sent = value!;
+                                                debugPrint('value $value');
+                                              });
+                                            },
+                                          ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              child: const Text('Send'),
+                              onPressed: () async {
+                                listData.add(DetailsData(ammount: valueController.text,sent: sent,userName: toController.text));
+                                 Navigator.pushReplacement(context, MaterialPageRoute(
+                                        builder: (context) => const MainView(),
+                                      ));
+                              },
+                            ),
+                            TextButton(
+                              child: const Text('Cancel'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
                             ),
                           ],
+                          title: const Text('Add Transaction'),
                         ),
-                      ),
-                      actions: [
-                        TextButton(
-                          child: Text('Edit'),
-                          onPressed: () async {
-                            userName = controller.text;
-                            firstChar = getInitials(controller.text);
-                            setState(() {});
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MainView(),
-                                ));
-                          },
+                      );
+                    },
+                  ),
+        
+                   Icon(Icons.send)
+                ],
+              ),
+        
+              TextButton(
+                    child: const Text('Edit Balance'),
+                    onPressed: () {
+                      TextEditingController balanceController = TextEditingController();
+                      
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          content: SizedBox(
+                            width: 500,
+                            height: 150,
+                            child: Column(
+                              children: [
+                                AppTextField(
+                                    controller: balanceController,
+                                    keyboardType: TextInputType.text,
+                                    icon: const Icon(Icons.abc),
+                                    hintText: 'Balance',
+                                    label: 'Balance'),
+                                
+                              ],
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              child: const Text('Edit'),
+                              onPressed: () async {
+                                totalPalance = balanceController.text;
+                                setState(() {
+                                  
+                                });
+                                Navigator.pushReplacement(context, MaterialPageRoute(
+                                        builder: (context) => const MainView(),
+                                      ));
+                              },
+                            ),
+                            TextButton(
+                              child: const Text('Cancel'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                          title: const Text('Edit Balance'),
                         ),
-                        TextButton(
-                          child: Text('Cancel'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                      title: Text('Edit User Name'),
-                    ),
-                  );
-                },
-                child: const Text('Change')),
-          ],
+                      );
+                    },
+                  ),
+            ],
+          ),
         ),
       ),
     );

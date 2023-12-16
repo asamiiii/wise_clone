@@ -52,6 +52,32 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 15,
               ),
+              Row(
+                children: [
+                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                     children: [
+                       Text(
+                        'Total Balance  ',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
+                                         ),
+
+                                          Text(
+                        '$totalPalance',
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w500,
+                        ),
+                                         ),
+                     ],
+                   ),
+                  
+                ],
+              ),
                Row(
                 children: [
                   const Text(
@@ -83,12 +109,18 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 180,
                 child: ListView.separated(
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                  return transactionsItem(context, userName: listData[index].userName,mony: listData[index].ammount,sent: listData[index].sent);
-                },
-                separatorBuilder: (context, index) => SizedBox(height: 10,),
-                ),
+  itemCount: 3,
+  itemBuilder: (context, index) {
+    final reversedIndex = listData.length - 1 - index;
+    return transactionsItem(
+      context,
+      userName: listData[reversedIndex].userName,
+      mony: listData[reversedIndex].ammount,
+      sent: listData[reversedIndex].sent,
+    );
+  },
+  separatorBuilder: (context, index) => SizedBox(height: 10),
+)
               ),
               const SizedBox(
                 height: 40,

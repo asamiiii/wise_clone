@@ -7,8 +7,9 @@ import 'package:wise_clone/screens/widgets.dart';
 String getInitials(String bankAccountName) => bankAccountName.isNotEmpty
     ? bankAccountName.trim().split(RegExp(' +')).map((s) => s[0]).take(2).join()
     : '';
-String? userName = 'Un Known'; 
+String? userName = 'AS'; 
 String? firstChar = getInitials(userName??'');
+String? totalPalance='100.0';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
