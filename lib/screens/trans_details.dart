@@ -1,7 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import 'package:wise_clone/screens/home.dart';
 
 class TransDetails extends StatefulWidget {
   const TransDetails({super.key});
@@ -16,9 +16,11 @@ class _TransDetailsState extends State<TransDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: HexColor('#eeefea'),
-        forceMaterialTransparency: true,
+        // forceMaterialTransparency: true,
+        // automaticallyImplyLeading:false ,
         leading: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: GestureDetector(
@@ -49,13 +51,16 @@ class _TransDetailsState extends State<TransDetails> {
           ),
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+            Container(
+              color:HexColor('#eeefea') ,
+              child: Column(
+                children: [
+                  const SizedBox(
               height: 20,
             ),
             Row(
@@ -134,9 +139,27 @@ class _TransDetailsState extends State<TransDetails> {
                         debugPrint('switched to: $index');
                       },
                     ),
+                    Row(
+                      children: [
+                        currentIndex==0? Container(
+                          color: Colors.black,
+                          height: 3,
+                          width: MediaQuery.of(context).size.width*0.50,
+                        ):SizedBox(width: MediaQuery.of(context).size.width*0.50),
+                        // const SizedBox(width: 50,),
+                         currentIndex==1? Container(
+                          color: Colors.black,
+                          height: 3,
+                          width: MediaQuery.of(context).size.width*0.50,
+                        ):SizedBox(width: MediaQuery.of(context).size.width*0.50),
+                      ],
+                    )
                   ],
                 ),
               ],
+            ),
+                ],
+              ),
             ),
             sectionsList[currentIndex??0]
           ],
@@ -148,8 +171,9 @@ class _TransDetailsState extends State<TransDetails> {
 
 Widget updatesSection() {
   return SingleChildScrollView(
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+    child: Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      color: Colors.white,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,7 +204,92 @@ Widget updatesSection() {
 }
 
 Widget detailsSection (){
-  return SizedBox();
+  return SingleChildScrollView(
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      color: Colors.white,
+      child: const Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            'Transaction data',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              Text(
+                      'You have sent',
+                      // style: TextStyle(color: Colors.black54),
+                    ),
+                    Expanded(child: SizedBox()),
+                    Text(
+                      '10USD',
+                      // style: TextStyle(color: Colors.black54),
+                    ),
+            ],
+          ),
+SizedBox(height: 15,),
+          Row(
+            children: [
+              Text(
+                      'Our commission',
+                      // style: TextStyle(color: Colors.black54),
+                    ),
+                    Expanded(child: SizedBox()),
+                    Text(
+                      '0USD',
+                      // style: TextStyle(color: Colors.black54),
+                    ),
+            ],
+          ),
+        SizedBox(height: 20,),
+          Divider(
+            color: Colors.black,),
+            SizedBox(height: 20,),
+          Row(
+            children: [
+              Text(
+                      'fatima benhabi has received',
+                      // style: TextStyle(color: Colors.black54),
+                    ),
+                    Expanded(child: SizedBox()),
+                    Text(
+                      '10USD',
+                      // style: TextStyle(color: Colors.black54),
+                    ),
+            ],
+          ),
+          SizedBox(height: 20,),
+          Divider(
+            color: Colors.black,),
+            SizedBox(height: 20,),
+             Row(
+            children: [
+              Text(
+                      'Transaction number',
+                      // style: TextStyle(color: Colors.black54),
+                    ),
+                    Expanded(child: SizedBox()),
+                    Text(
+                      '#1564984561',
+                      // style: TextStyle(color: Colors.black54),
+                    ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 
