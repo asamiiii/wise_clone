@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wise_clone/home.dart';
+import 'package:wise_clone/screens/home.dart';
 import 'package:wise_clone/main.dart';
 
 class MainView extends StatefulWidget {

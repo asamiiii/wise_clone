@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wise_clone/home.dart';
+import 'package:wise_clone/screens/home.dart';
 
 class TransactionsList extends StatefulWidget {
   const TransactionsList({super.key});
@@ -63,35 +63,42 @@ class _TransactionsListState extends State<TransactionsList> {
               ),
             ),
             transactionsItem(
+              context, 
               home: false,
               userName: 'Ahmes Sami', sent: true, mony: '100.0'),
             SizedBox(
               height: 10,
             ),
-            transactionsItem(home: false,
+            transactionsItem(
+              context, 
+              home: false,
                 userName: 'Mohammed Badrawy', sent: false, mony: '20.0'),
             SizedBox(
               height: 10,
             ),
             transactionsItem(
+              context, 
               home: false,
               userName: 'Amr Ahmed', sent: true, mony: '10.50'),
             SizedBox(
               height: 10,
             ),
             transactionsItem(
+              context, 
               home: false,
               userName: 'Ahmes Sami', sent: true, mony: '100.0'),
             SizedBox(
               height: 10,
             ),
             transactionsItem(
+              context, 
               home: false,
                 userName: 'Mohammed Badrawy', sent: false, mony: '20.0'),
             SizedBox(
               height: 10,
             ),
             transactionsItem(
+              context, 
               home: false,
               userName: 'Amr Ahmed', sent: true, mony: '10.50'),
           ],

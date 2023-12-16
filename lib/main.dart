@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:wise_clone/main_view.dart';
+import 'package:wise_clone/screens/main_view.dart';
 
 HexColor mainColor = HexColor('#87EA5C');
 

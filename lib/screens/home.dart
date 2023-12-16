@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wise_clone/main.dart';
-import 'package:wise_clone/settings.dart';
-import 'package:wise_clone/trans_list.dart';
+import 'package:wise_clone/screens/settings.dart';
+import 'package:wise_clone/screens/trans_details.dart';
+import 'package:wise_clone/screens/trans_list.dart';
 
 List<String> imagesList=[
   'images/1.png',
@@ -62,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const Expanded(child: SizedBox()),
                   GestureDetector(
                     onTap: () {
-                       Navigator.push(context, MaterialPageRoute(builder:(context) => TransactionsList(),));
+                       Navigator.push(context, MaterialPageRoute(builder:(context) => const TransactionsList(),));
                     },
                     child: const Text(
                       'See all',
@@ -78,11 +79,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 20,
               ),
               
-              transactionsItem(userName: 'Ahmes Sami',sent: true,mony: '100.0'),
+              transactionsItem(context, userName: 'Ahmes Sami',sent: true,mony: '100.0'),
               SizedBox(height: 10,),
-              transactionsItem(userName: 'Mohammed Badrawy',sent: false,mony: '20.0'),
+              transactionsItem(context, userName: 'Mohammed Badrawy',sent: false,mony: '20.0'),
               SizedBox(height: 10,),
-              transactionsItem(userName: 'Amr Ahmed',sent: true,mony: '10.50'),
+              transactionsItem(context, userName: 'Amr Ahmed',sent: true,mony: '10.50'),
               
               const SizedBox(
                 height: 40,
@@ -162,28 +163,33 @@ Widget radiusButton({required String? txt}){
 
 
 
-Widget transactionsItem({bool? home=true, required String? userName,required bool? sent, required String? mony}){
+Widget transactionsItem(BuildContext context,{bool? home=true, required String? userName,required bool? sent, required String? mony}){
   //? Transactions Section
   return 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                        radius: home==true? 25 : 30,
-                        backgroundColor: Colors.grey[200],
-                        child:  Icon(sent==true ?Icons.arrow_upward:Icons.arrow_downward),
-                      ),
-        
-                  const SizedBox(width: 20,),
-                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(userName??'',style:  TextStyle(fontSize:home==true? 13:15,fontWeight: FontWeight.bold),),
-                      Text(sent==true?'Sent':'Recive',textAlign: TextAlign.start,style: const TextStyle(color: Colors.grey),)
-                    ],
-                  ),
-                  const Expanded(child: SizedBox()),
-                   Text('$mony USD')
-                ],
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => const TransDetails(),));
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                          radius: home==true? 25 : 35,
+                          backgroundColor: Colors.grey[200],
+                          child:  Icon(sent==true ?Icons.arrow_upward:Icons.arrow_downward),
+                        ),
+                        
+                    const SizedBox(width: 20,),
+                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(userName??'',style:  TextStyle(fontSize:home==true? 13:15,fontWeight: FontWeight.bold),),
+                        Text(sent==true?'Sent':'Recived',textAlign: TextAlign.start,style: const TextStyle(color: Colors.grey),)
+                      ],
+                    ),
+                    const Expanded(child: SizedBox()),
+                     Text('$mony USD',style: const TextStyle(fontWeight: FontWeight.w400),)
+                  ],
+                ),
               );
 }
