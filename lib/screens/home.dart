@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               const Text(
                 'Account',
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
               ),
               const SizedBox(
                 height: 15,
@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                          ),
 
                                           Text(
-                        '$totalPalance',
+                        '$totalPalance USD',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.w500,
@@ -78,12 +78,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   
                 ],
               ),
+              SizedBox(height: 20,),
                Row(
                 children: [
                   const Text(
                     'Transactions',
                     style: TextStyle(
-                      fontSize: 25,
+                      fontSize: 20,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -127,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const Text(
                 'Excahnge rate',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
               ),
               const SizedBox(
                 height: 20,

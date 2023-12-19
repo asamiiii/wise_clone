@@ -1,9 +1,11 @@
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:wise_clone/screens/home.dart';
-
+int? serialNumb = 0;
 class TransDetails extends StatefulWidget {
    TransDetails({super.key,this.data});
   DetailsData? data;
@@ -14,6 +16,12 @@ class TransDetails extends StatefulWidget {
 class _TransDetailsState extends State<TransDetails> {
   int? currentIndex = 0;
   
+
+  @override
+  void initState() {
+    serialNumb = Random().nextInt(1000000);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     List<Widget> sectionsList=[updatesSection(),detailsSection(data: widget.data)];
@@ -99,6 +107,7 @@ class _TransDetailsState extends State<TransDetails> {
                       height: 20,
                     ),
                     Container(
+                      height: 35,
                       padding: const EdgeInsets.only(
                           right: 13, left: 5, top: 5, bottom: 5),
                       decoration: BoxDecoration(
@@ -115,25 +124,27 @@ class _TransDetailsState extends State<TransDetails> {
                                 size: 20,
                               )),
                           SizedBox(
-                            width: 10,
+                            width: 5,
                           ),
                           Text('General'),
                         ],
                       ),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 30,
                     ),
                     ToggleSwitch(
                       minWidth: 230.0,
                       minHeight: 60.0,
                       fontSize: 16.0,
+                      
                       initialLabelIndex: currentIndex,
                       activeBgColor: [HexColor('#eeefea')],
                       activeFgColor: Colors.black,
                       inactiveBgColor: HexColor('#eeefea'),
                       inactiveFgColor: Colors.grey[500],
                       totalSwitches: 2,
+                      customTextStyles: [TextStyle(fontWeight: FontWeight.w500)],
                       labels: const ['Updates', 'Details'],
                       onToggle: (index) {
                         currentIndex = index;
@@ -198,6 +209,45 @@ Widget updatesSection() {
           timeLineItem(),
           timeLineItem(),
           timeLineItem(lastItem: true),
+
+          SizedBox(height: 30,),
+
+          Container(
+                      height: 50,
+                      padding: const EdgeInsets.only(
+                          right: 13, left: 5, top: 5, bottom: 5),
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(25)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          
+                          
+                          Text('Repeat this transfer',style: TextStyle(fontWeight: FontWeight.w500),),
+                        ],
+                      ),
+                    ),
+SizedBox(height: 15,),
+
+                    Container(
+                      height: 50,
+                      padding: const EdgeInsets.only(
+                          right: 13, left: 5, top: 5, bottom: 5),
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(25)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          
+                          
+                          Text('Rate the app',style: TextStyle(fontWeight: FontWeight.w500),),
+                        ],
+                      ),
+                    ),
           
         ],
       ),
@@ -283,11 +333,30 @@ SizedBox(height: 15,),
                     ),
                     Expanded(child: SizedBox()),
                     Text(
-                      '#1564984561',
+                      '#${serialNumb}',
                       // style: TextStyle(color: Colors.black54),
                     ),
             ],
           ),
+          SizedBox(height: 20,),
+          Container(
+                      height: 50,
+                      padding: const EdgeInsets.only(
+                          right: 13, left: 5, top: 5, bottom: 5),
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(25)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          
+                          
+                          Text('Download transfer receipt',style: TextStyle(fontWeight: FontWeight.w500),),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 30,)
         ],
       ),
     ),

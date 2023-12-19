@@ -213,7 +213,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const SizedBox(height: 15,),
             settingsItem('Settings', Icons.settings),
             const SizedBox(height: 15,),
-            GestureDetector(
+            InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return const EditProfile();
