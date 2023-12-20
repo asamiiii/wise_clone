@@ -21,6 +21,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  void initState() {
+    listData.sort((a,b) => a.time!.compareTo(b.time!));
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -118,6 +123,8 @@ class _HomeScreenState extends State<HomeScreen> {
       userName: listData[reversedIndex].userName,
       mony: listData[reversedIndex].ammount,
       sent: listData[reversedIndex].sent,
+      id: listData[reversedIndex].id,
+      time: listData[reversedIndex].time
     );
   },
   separatorBuilder: (context, index) => SizedBox(height: 10),
@@ -204,19 +211,22 @@ Widget radiusButton({required String? txt}){
 }
 
 class DetailsData{
+  int? id;
   String? userName;
   String? ammount;
   bool? sent;
+  DateTime? time;
+  
 
-  DetailsData({this.userName,this.ammount,this.sent});
+  DetailsData({this.id,this.userName,this.ammount,this.sent,this.time});
 }
 
-Widget transactionsItem(BuildContext context,{bool? home=true, required String? userName,required bool? sent, required String? mony}){
+Widget transactionsItem(BuildContext context,{bool? home=true, required String? userName,required bool? sent, required String? mony,required int? id,required DateTime? time}){
   //? Transactions Section
   return 
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context,MaterialPageRoute(builder: (context) =>  TransDetails(data: DetailsData(userName: userName,sent: sent,ammount: mony)),));
+                  Navigator.push(context,MaterialPageRoute(builder: (context) =>  TransDetails(data: DetailsData(userName: userName,sent: sent,ammount: mony,id: id,time: time)),));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,

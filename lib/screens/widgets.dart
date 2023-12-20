@@ -16,6 +16,7 @@ class AppTextField extends StatelessWidget {
   bool? readOnly = false;
   String? label;
   bool? isValid = true;
+  Function? onTap;
   AppTextField(
       {Key? key,
       required this.controller,
@@ -26,6 +27,7 @@ class AppTextField extends StatelessWidget {
       this.isOnChange,
       this.totalDept,
       this.readOnly = false,
+      this.onTap,
       // this.isValid=true,
       required this.label})
       : super(key: key);
@@ -34,9 +36,14 @@ class AppTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
         controller: controller,
+
         readOnly: readOnly!,
         autofocus: true,
         maxLines: maxLines,
+        onTap: () {
+          debugPrint('aa');
+          onTap!() ?? (){};
+        },
         style: const TextStyle(
           fontSize: 15,
         ),

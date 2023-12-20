@@ -1,11 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:wise_clone/screens/home.dart';
 
-List<DetailsData> listData=[
-  DetailsData(userName: 'Ahmed Sami',sent: true,ammount: '100.0'),
-   DetailsData(userName: 'Mohammed Badrawy',sent: false,ammount: '9.0'),
-    DetailsData(userName: 'Amr Ahmed',sent: true,ammount: '1.0'),
-     DetailsData(userName: 'Ahmed Sami',sent: true,ammount: '98.0')
+List<DetailsData> listData = [
+  DetailsData(
+      id: 123456,
+      userName: 'Ahmed Sami',
+      sent: true,
+      ammount: '100.0',
+      time: DateTime.parse('2023-12-11 01:15:00.000')),
+  DetailsData(
+      userName: 'Mohammed Badrawy',
+      sent: false,
+      ammount: '9.0',
+      id: 654321,
+      time: DateTime.parse('2023-12-13 05:30:00.000')),
+  DetailsData(
+      userName: 'Amr Ahmed',
+      sent: true,
+      ammount: '1.0',
+      id: 123456,
+      time: DateTime.parse('2023-12-14 07:40:00.000')),
+  DetailsData(
+      userName: 'Ahmed Sami',
+      sent: true,
+      ammount: '98.0',
+      id: 123456,
+      time: DateTime.parse('2023-12-11 08:15:00.000'))
 ];
 
 class TransactionsList extends StatefulWidget {
@@ -28,7 +48,7 @@ class _TransactionsListState extends State<TransactionsList> {
                 Navigator.pop(context);
               },
               child: CircleAvatar(
-                // radius: 35,
+                  // radius: 35,
                   backgroundColor: Colors.grey[200],
                   child: const Icon(Icons.close)),
             )),
@@ -43,10 +63,8 @@ class _TransactionsListState extends State<TransactionsList> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
             const SizedBox(
               height: 20,
             ),
@@ -71,17 +89,23 @@ class _TransactionsListState extends State<TransactionsList> {
             ),
             Expanded(
               child: ListView.separated(
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  final reversedIndex = listData.length - 1 - index;
-                return transactionsItem(
-                context, 
-                home: false,
-                userName: listData[reversedIndex].userName, sent: listData[reversedIndex].sent, mony: listData[reversedIndex].ammount);
-              }, separatorBuilder: (context, index) => const SizedBox(height: 10,), itemCount: listData.length),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    final reversedIndex = listData.length - 1 - index;
+                    return transactionsItem(context,
+                        home: false,
+                        id: listData[reversedIndex].id,
+                        time: listData[reversedIndex].time,
+                        userName: listData[reversedIndex].userName,
+                        sent: listData[reversedIndex].sent,
+                        mony: listData[reversedIndex].ammount);
+                  },
+                  separatorBuilder: (context, index) => const SizedBox(
+                        height: 10,
+                      ),
+                  itemCount: listData.length),
             )
-          ])
-      ),
+          ])),
     );
   }
 }

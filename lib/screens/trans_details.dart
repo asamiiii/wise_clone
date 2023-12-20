@@ -3,9 +3,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:wise_clone/screens/home.dart';
-int? serialNumb = 0;
+// int? serialNumb = 0;
 class TransDetails extends StatefulWidget {
    TransDetails({super.key,this.data});
   DetailsData? data;
@@ -19,17 +20,19 @@ class _TransDetailsState extends State<TransDetails> {
 
   @override
   void initState() {
-    serialNumb = Random().nextInt(1000000);
+    debugPrint('id : ${widget.data?.time}');
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    List<Widget> sectionsList=[updatesSection(),detailsSection(data: widget.data)];
+    List<Widget> sectionsList=[updatesSection(widget.data!.time!),detailsSection(data: widget.data)];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: HexColor('#eeefea'),
-        forceMaterialTransparency: true,
+        // foregroundColor: HexColor('#eeefea'),
+        surfaceTintColor: HexColor('#eeefea'),
+        // forceMaterialTransparency: true,
         // automaticallyImplyLeading:false ,
         leading: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -182,7 +185,7 @@ class _TransDetailsState extends State<TransDetails> {
   }
 }
 
-Widget updatesSection() {
+Widget updatesSection(DateTime time) {
   return SingleChildScrollView(
     child: Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
@@ -205,10 +208,10 @@ Widget updatesSection() {
             height: 10,
           ),
           //? Time Line Item
-          timeLineItem(),
-          timeLineItem(),
-          timeLineItem(),
-          timeLineItem(lastItem: true),
+          timeLineItem(time),
+          timeLineItem(time),
+          timeLineItem(time),
+          timeLineItem(lastItem: true,time),
 
           SizedBox(height: 30,),
 
@@ -321,19 +324,19 @@ SizedBox(height: 15,),
                     ),
             ],
           ),
-          SizedBox(height: 20,),
+          const SizedBox(height: 20,),
           Divider(
             color: Colors.black,),
             SizedBox(height: 20,),
              Row(
             children: [
-              Text(
+              const Text(
                       'Transaction number',
                       // style: TextStyle(color: Colors.black54),
                     ),
-                    Expanded(child: SizedBox()),
+                    const Expanded(child: SizedBox()),
                     Text(
-                      '#${serialNumb}',
+                      '#${data?.id}',
                       // style: TextStyle(color: Colors.black54),
                     ),
             ],
@@ -364,7 +367,9 @@ SizedBox(height: 15,),
 }
 
 
-Widget timeLineItem({bool? lastItem=false}){
+Widget timeLineItem(DateTime? time,{bool? lastItem=false}){
+  String formattedDate = DateFormat('yyyy-MM-dd').format(time!);
+  String formattedTime= DateFormat('kk:mm').format(time);
   return Row(
             children: [
               Column(
@@ -383,7 +388,7 @@ Widget timeLineItem({bool? lastItem=false}){
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Today at 2:23 p.m.'),
+                   Text('$formattedDate at $formattedTime'),
                   Text(lastItem == false ?'You set up your transfer':'Your transfers complete'),
                   const SizedBox(height: 10,)
                 ],

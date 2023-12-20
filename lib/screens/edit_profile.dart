@@ -1,4 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:intl/intl.dart';
 import 'package:wise_clone/screens/home.dart';
 import 'package:wise_clone/screens/main_view.dart';
 import 'package:wise_clone/screens/settings.dart';
@@ -13,10 +17,9 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  bool? sent =true;
+  bool? sent = true;
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -83,7 +86,8 @@ class _EditProfileState extends State<EditProfile> {
               ),
               Text(
                 userName ?? '',
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
               ),
               TextButton(
                   onPressed: () {
@@ -143,128 +147,180 @@ class _EditProfileState extends State<EditProfile> {
                   TextButton(
                     child: const Text('Add Transaction'),
                     onPressed: () {
-                      TextEditingController toController = TextEditingController();
-                      TextEditingController valueController = TextEditingController();
-                      
+                      TextEditingController toController =
+                          TextEditingController();
+                      TextEditingController valueController =
+                          TextEditingController();
+                      TextEditingController idController =
+                          TextEditingController();
+                      TextEditingController timeController =
+                          TextEditingController();
+
                       showDialog(
                         context: context,
-                        builder: (context) => AlertDialog(
-                          content: SizedBox(
-                            width: 500,
-                            height: 300,
-                            child: Column(
-                              children: [
-                                AppTextField(
-                                    controller: toController,
-                                    keyboardType: TextInputType.text,
-                                    icon: const Icon(Icons.abc),
-                                    hintText: 'To',
-                                    label: 'Name'),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                AppTextField(
-                                    controller: valueController,
-                                    keyboardType: TextInputType.text,
-                                    icon: const Icon(Icons.abc),
-                                    hintText: 'value',
-                                    label: 'value'),
-                                StatefulBuilder(
-                                  builder:(context, setState) =>  Row(
-                                    children: [
-                                      const Text('Sent'),
-                                      Checkbox(
-                                            checkColor: Colors.white,
-                                            // fillColor: MaterialStateProperty.resolveWith(getColor),
-                                            value: sent,
-                                            onChanged: (bool? value) {
-                                              setState(() {
-                                                sent = value!;
-                                                debugPrint('value $value');
-                                              });
-                                            },
-                                          ),
-                                    ],
+                        barrierDismissible: true,
+                        builder: (context) => SingleChildScrollView(
+                          child: AlertDialog(
+                            content: SizedBox(
+                              width: 500,
+                              height: 350,
+                              child: Column(
+                                children: [
+                                  AppTextField(
+                                      controller: idController,
+                                      keyboardType: TextInputType.number,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'id',
+                                      label: 'id'),
+                                  const SizedBox(
+                                    height: 10,
                                   ),
-                                )
-                              ],
+                                  AppTextField(
+                                      controller: toController,
+                                      keyboardType: TextInputType.text,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'To',
+                                      label: 'Name'),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  AppTextField(
+                                      controller: valueController,
+                                      keyboardType: TextInputType.number,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'value',
+                                      label: 'value'),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  AppTextField(
+                                      onTap: () {
+                                        debugPrint('Pick Time');
+                                        DatePicker.showDateTimePicker(context,
+                                        showTitleActions: true,
+                                            minTime: DateTime(2011, 3, 5),
+                                            maxTime: DateTime.now(),
+                                            onChanged: (date) {
+                                              String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(date);
+                                              debugPrint('date : $date');
+                                          timeController.text=formattedDate;
+                                        }, onConfirm: (date) {
+                                          String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(date);
+                                              debugPrint('date : $date');
+                                          timeController.text=formattedDate;
+                                        },
+                                            currentTime: DateTime.now(),
+                                            locale: LocaleType.en);
+                                      },
+                                      readOnly: true,
+                                      controller: timeController,
+                                      keyboardType: TextInputType.text,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'time',
+                                      label: 'time'),
+                                  StatefulBuilder(
+                                    builder: (context, setState) => Row(
+                                      children: [
+                                        const Text('Sent'),
+                                        Checkbox(
+                                          checkColor: Colors.white,
+                                          // fillColor: MaterialStateProperty.resolveWith(getColor),
+                                          value: sent,
+                                          onChanged: (bool? value) {
+                                            setState(() {
+                                              sent = value!;
+                                              debugPrint('value $value');
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                          actions: [
-                            TextButton(
-                              child: const Text('Send'),
-                              onPressed: () async {
-                                listData.add(DetailsData(ammount: valueController.text,sent: sent,userName: toController.text));
-                                 Navigator.pushReplacement(context, MaterialPageRoute(
+                            actions: [
+                              TextButton(
+                                child: const Text('Send'),
+                                onPressed: () async {
+                                  listData.add(DetailsData(
+                                      ammount: valueController.text,
+                                      sent: sent,
+                                      userName: toController.text,
+                                      id: int.parse(idController.text),
+                                      time: DateTime.parse(timeController.text),
+                                      ));
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
                                         builder: (context) => const MainView(),
                                       ));
-                              },
-                            ),
-                            TextButton(
-                              child: const Text('Cancel'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                          title: const Text('Add Transaction'),
+                                },
+                              ),
+                              TextButton(
+                                child: const Text('Cancel'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                            title: const Text('Add Transaction'),
+                          ),
                         ),
                       );
                     },
                   ),
-        
-                   Icon(Icons.send)
+                  Icon(Icons.send)
                 ],
               ),
-        
               TextButton(
-                    child: const Text('Edit Balance'),
-                    onPressed: () {
-                      TextEditingController balanceController = TextEditingController();
-                      
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          content: SizedBox(
-                            width: 500,
-                            height: 150,
-                            child: Column(
-                              children: [
-                                AppTextField(
-                                    controller: balanceController,
-                                    keyboardType: TextInputType.text,
-                                    icon: const Icon(Icons.abc),
-                                    hintText: 'Balance',
-                                    label: 'Balance'),
-                                
-                              ],
-                            ),
-                          ),
-                          actions: [
-                            TextButton(
-                              child: const Text('Edit'),
-                              onPressed: () async {
-                                totalPalance = balanceController.text;
-                                setState(() {
-                                  
-                                });
-                                Navigator.pushReplacement(context, MaterialPageRoute(
-                                        builder: (context) => const MainView(),
-                                      ));
-                              },
-                            ),
-                            TextButton(
-                              child: const Text('Cancel'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
+                child: const Text('Edit Balance'),
+                onPressed: () {
+                  TextEditingController balanceController =
+                      TextEditingController();
+
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      content: SizedBox(
+                        width: 500,
+                        height: 150,
+                        child: Column(
+                          children: [
+                            AppTextField(
+                                controller: balanceController,
+                                keyboardType: TextInputType.text,
+                                icon: const Icon(Icons.abc),
+                                hintText: 'Balance',
+                                label: 'Balance'),
                           ],
-                          title: const Text('Edit Balance'),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                      actions: [
+                        TextButton(
+                          child: const Text('Edit'),
+                          onPressed: () async {
+                            totalPalance = balanceController.text;
+                            setState(() {});
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MainView(),
+                                ));
+                          },
+                        ),
+                        TextButton(
+                          child: const Text('Cancel'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                      title: const Text('Edit Balance'),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
