@@ -1,7 +1,8 @@
 import 'dart:ffi';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:wise_clone/models/trans.dart';
 import 'package:wise_clone/screens/home.dart';
@@ -198,17 +199,21 @@ class _EditProfileState extends State<EditProfile> {
                                       onTap: () {
                                         debugPrint('Pick Time');
                                         DatePicker.showDateTimePicker(context,
-                                        showTitleActions: true,
+                                            showTitleActions: true,
                                             minTime: DateTime(2011, 3, 5),
                                             maxTime: DateTime.now(),
                                             onChanged: (date) {
-                                              String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(date);
-                                              debugPrint('date : $date');
-                                          timeController.text=formattedDate;
+                                          String formattedDate =
+                                              DateFormat('yyyy-MM-dd kk:mm')
+                                                  .format(date);
+                                          debugPrint('date : $date');
+                                          timeController.text = formattedDate;
                                         }, onConfirm: (date) {
-                                          String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(date);
-                                              debugPrint('date : $date');
-                                          timeController.text=formattedDate;
+                                          String formattedDate =
+                                              DateFormat('yyyy-MM-dd kk:mm')
+                                                  .format(date);
+                                          debugPrint('date : $date');
+                                          timeController.text = formattedDate;
                                         },
                                             currentTime: DateTime.now(),
                                             locale: LocaleType.en);
@@ -244,18 +249,42 @@ class _EditProfileState extends State<EditProfile> {
                               TextButton(
                                 child: const Text('Send'),
                                 onPressed: () async {
-                                  listData.add(DetailsData(
+                                  if (idController.text.isEmpty ||
+                                      toController.text.isEmpty ||
+                                      valueController.text.isEmpty ||
+                                      timeController.text.isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg: "Please Fill all data",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  } else {
+                                    await addItemToLocal(DetailsData(
                                       ammount: valueController.text,
                                       sent: sent,
                                       userName: toController.text,
                                       id: int.parse(idController.text),
                                       time: DateTime.parse(timeController.text),
-                                      ));
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const MainView(),
-                                      ));
+                                    ));
+
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MainView(),
+                                        ));
+                                    Fluttertoast.showToast(
+                                        msg: "Transaction is Added",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.green,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  }
                                 },
                               ),
                               TextButton(
@@ -274,8 +303,15 @@ class _EditProfileState extends State<EditProfile> {
                   Icon(Icons.send)
                 ],
               ),
+              SizedBox(height: 50,),
               TextButton(
-                child: const Text('Edit Balance'),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Edit Balance'),
+                    Icon(Icons.attach_money)
+                  ],
+                ),
                 onPressed: () {
                   TextEditingController balanceController =
                       TextEditingController();
@@ -301,7 +337,11 @@ class _EditProfileState extends State<EditProfile> {
                         TextButton(
                           child: const Text('Edit'),
                           onPressed: () async {
-                            totalPalance = balanceController.text;
+                            // Obtain shared preferences.
+                            final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                                await prefs.setString('totalPalance' , balanceController.text );
+                            // totalPalance = balanceController.text;
                             setState(() {});
                             Navigator.pushReplacement(
                                 context,

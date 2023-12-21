@@ -1,6 +1,6 @@
 
 import 'dart:math';
-
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
@@ -84,7 +84,7 @@ class _TransDetailsState extends State<TransDetails> {
                     CircleAvatar(
                       radius: 45,
                       backgroundColor: Colors.grey[300],
-                      child:  Icon(widget.data?.sent==true?Icons.arrow_upward:Icons.arrow_downward),
+                      child:  Icon(widget.data?.sent==true?Icons.arrow_upward:Icons.arrow_downward,size: 40,),
                     ),
                     const SizedBox(
                       height: 10,
@@ -283,12 +283,12 @@ Widget detailsSection ({DetailsData? data}){
           Row(
             children: [
               Text(
-                      data?.sent==true? 'You have sent':'You have recived',
+                      data?.sent==true? 'You  sent':'You  recived',
                       // style: TextStyle(color: Colors.black54),
                     ),
                     Expanded(child: SizedBox()),
                     Text(
-                      '${data?.ammount}USD',
+                      '${data?.ammount} USD',
                       // style: TextStyle(color: Colors.black54),
                     ),
             ],
@@ -302,31 +302,33 @@ SizedBox(height: 15,),
                     ),
                     Expanded(child: SizedBox()),
                     Text(
-                      '0USD',
+                      '0 USD',
                       // style: TextStyle(color: Colors.black54),
                     ),
             ],
           ),
-        SizedBox(height: 20,),
-          Divider(
-            color: Colors.black,),
-            SizedBox(height: 20,),
+        const SizedBox(height: 20,),
+          // const Divider(
+          //   color: Colors.black,),
+          const DottedLine(),
+            const SizedBox(height: 20,),
           Row(
             children: [
               Text(
-                      data?.sent==false? '${data?.userName} has received':'${data?.userName} has Sent',
+                      data?.sent==true? '${data?.userName} has received':'${data?.userName} has Sent',
                       // style: TextStyle(color: Colors.black54),
                     ),
-                    Expanded(child: SizedBox()),
+                    const Expanded(child: SizedBox()),
                     Text(
-                      '${data?.ammount}USD',
+                      '${data?.ammount} USD',
                       // style: TextStyle(color: Colors.black54),
                     ),
             ],
           ),
           const SizedBox(height: 20,),
-          Divider(
-            color: Colors.black,),
+          // Divider(
+          //   color: Colors.black,),
+          const DottedLine(),
             SizedBox(height: 20,),
              Row(
             children: [
@@ -389,7 +391,7 @@ Widget timeLineItem(DateTime? time,{bool? lastItem=false}){
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                    Text('$formattedDate at $formattedTime'),
-                  Text(lastItem == false ?'You set up your transfer':'Your transfers complete'),
+                  Text(lastItem == false ?'You set up your transfer':'Your transfers complete',style: TextStyle(fontWeight: lastItem == true? FontWeight.bold:FontWeight.normal),),
                   const SizedBox(height: 10,)
                 ],
               )

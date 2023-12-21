@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:hive/hive.dart';
 import 'package:wise_clone/models/trans.dart';
+import 'package:wise_clone/screens/home.dart';
 import 'package:wise_clone/screens/main_view.dart';
 import 'package:wise_clone/screens/trans_list.dart';
 import 'package:wise_clone/screens/widgets.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
+FToast? fToast;
 HexColor mainColor = HexColor('#87EA5C');
 Box<DetailsData>? persons;
 void main() async{
   image = null;
     imagePath = null;
+    
     await Hive.initFlutter();
     Hive.registerAdapter(DetailsDataAdapter());
    persons = await Hive.openBox('trans');
+  //  debugPrint('dummyData : $dummyData ');
+  //  for (var element in dummyData) { 
+  //   persons?.add(element);
+  //  }
+  // getAllLocalTrans();
+  // persons?.clear();
+
   runApp(const MyApp());
   
 }
@@ -25,6 +35,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    fToast?.init(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Wise',
