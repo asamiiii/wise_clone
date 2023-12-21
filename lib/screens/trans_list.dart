@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wise_clone/screens/home.dart';
-
+import 'package:wise_clone/models/trans.dart';
 List<DetailsData> listData = [
   DetailsData(
       id: 123456,

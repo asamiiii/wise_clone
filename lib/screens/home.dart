@@ -4,6 +4,7 @@ import 'package:wise_clone/screens/settings.dart';
 import 'package:wise_clone/screens/trans_details.dart';
 import 'package:wise_clone/screens/trans_list.dart';
 import 'package:wise_clone/screens/widgets.dart';
+import 'package:wise_clone/models/trans.dart';
 
 List<String> imagesList=[
   'images/1.png',
@@ -210,16 +211,6 @@ Widget radiusButton({required String? txt}){
           );
 }
 
-class DetailsData{
-  int? id;
-  String? userName;
-  String? ammount;
-  bool? sent;
-  DateTime? time;
-  
-
-  DetailsData({this.id,this.userName,this.ammount,this.sent,this.time});
-}
 
 Widget transactionsItem(BuildContext context,{bool? home=true, required String? userName,required bool? sent, required String? mony,required int? id,required DateTime? time}){
   //? Transactions Section

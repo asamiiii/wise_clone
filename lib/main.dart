@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:hive/hive.dart';
+import 'package:wise_clone/models/trans.dart';
 import 'package:wise_clone/screens/main_view.dart';
+import 'package:wise_clone/screens/trans_list.dart';
 import 'package:wise_clone/screens/widgets.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 HexColor mainColor = HexColor('#87EA5C');
-
-void main() {
+Box<DetailsData>? persons;
+void main() async{
   image = null;
     imagePath = null;
+    await Hive.initFlutter();
+    Hive.registerAdapter(DetailsDataAdapter());
+   persons = await Hive.openBox('trans');
   runApp(const MyApp());
   
 }

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:wise_clone/screens/edit_profile.dart';
 import 'package:wise_clone/screens/home.dart';

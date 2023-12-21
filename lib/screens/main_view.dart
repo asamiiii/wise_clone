@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wise_clone/screens/home.dart';
 import 'package:wise_clone/main.dart';
-import 'package:wise_clone/screens/widgets.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});

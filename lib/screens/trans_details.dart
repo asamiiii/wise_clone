@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import 'package:wise_clone/screens/home.dart';
+import 'package:wise_clone/models/trans.dart';
 // int? serialNumb = 0;
 class TransDetails extends StatefulWidget {
    TransDetails({super.key,this.data});
