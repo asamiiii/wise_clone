@@ -1,8 +1,8 @@
 import 'dart:io';
-
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:wise_clone/screens/settings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class AppTextField extends StatelessWidget {
@@ -36,13 +36,12 @@ class AppTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
         controller: controller,
-
         readOnly: readOnly!,
         autofocus: true,
         maxLines: maxLines,
         onTap: () {
           debugPrint('aa');
-          onTap!() ?? (){};
+          onTap!() ?? () {};
         },
         style: const TextStyle(
           fontSize: 15,
@@ -64,19 +63,37 @@ class AppTextField extends StatelessWidget {
   }
 }
 
-File? image=File('');
+File? image = File('');
 String? imagePath;
 Future<void> getImageFromFiles() async {
   PickedFile? pickedFile = await ImagePicker().getImage(
     source: ImageSource.gallery,
   );
   if (pickedFile != null) {
-    imagePath =pickedFile.path;
+    imagePath = pickedFile.path;
+    debugPrint('imagePath : $imagePath');
     image = File(imagePath!);
+    saveImageToStorage(imagePath);
   } else {
     print('No image selected');
   }
 // debugPrint('imagePath : $imagePath');
 
   // return imageUrl;
+}
+
+Future<void> saveImageToStorage(String? image) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  debugPrint('profile Imge Pathe : $imagePath');
+  await prefs.setString('profile_image', image!);
+}
+
+Future<void> saveProfileName(String? name) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('profile_name', name!);
+}
+
+Future<String?> getProfileName() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+   return prefs.getString('profile_name');
 }

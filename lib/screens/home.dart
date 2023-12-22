@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
@@ -28,22 +30,34 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = false;
   @override
   void initState() {
-    
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       // Obtain shared preferences.
-final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
       isLoading = true;
-      setState(() {
-        
-      });
-      totalPalance =  prefs.getString('totalPalance');
+      setState(() {});
+      totalPalance = prefs.getString('totalPalance');
+      userName =await getProfileName()??'AS';
+      firstChar = getInitials(await getProfileName()??'AS'); 
+      var profileImagePath = prefs.getString('profile_image');
+      debugPrint('path : $profileImagePath');
+      if (profileImagePath != null) {
+        image =  File(profileImagePath);
+        if (image!.existsSync()) {
+          // File exists, display the image
+          debugPrint('file is Exist');
+          Image.file(image!);
+        } else {
+          debugPrint('file is NOt Exist');
+          // File does not exist, handle the error
+          // You can display a placeholder image or show an error message
+        }
+      }
+
       await getAllLocalTrans();
       listData.sort((a, b) => a.time!.compareTo(b.time!));
       debugPrint('list dat : $listData');
       isLoading = false;
-      setState(() {
-        
-      });
+      setState(() {});
     });
 
     super.initState();
@@ -75,170 +89,181 @@ final SharedPreferences prefs = await SharedPreferences.getInstance();
           ),
         ],
       ),
-      body: isLoading==true?Center(child: CircularProgressIndicator(),): SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Account',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Total Balance  ',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Text(
-                        '${totalPalance ?? 100.0} USD',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: [
-                  const Text(
-                    'Transactions',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
+      body: isLoading == true
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Account',
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
                     ),
-                  ),
-                  const Expanded(child: SizedBox()),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const TransactionsList(),
-                          ));
-                    },
-                    child: const Text(
-                      'See all',
-                      style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        fontSize: 15,
-                      ),
+                    const SizedBox(
+                      height: 15,
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              listData.isNotEmpty
-                  ? SizedBox(
-                      height: listData.length >= 3
-                          ? 180
-                          : listData.length == 2
-                              ? 120
-                              : listData.length == 1
-                                  ? 60
-                                  : 0,
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                        itemCount: listData.length > 3 ? 3 : listData.length,
-                        itemBuilder: (context, index) {
-                          final reversedIndex = listData.length - 1 - index;
-                          return transactionsItem(context,
-                              userName: listData[reversedIndex].userName,
-                              mony: listData[reversedIndex].ammount,
-                              sent: listData[reversedIndex].sent,
-                              id: listData[reversedIndex].id,
-                              time: listData[reversedIndex].time);
-                        },
-                        separatorBuilder: (context, index) =>
-                            const SizedBox(height: 10),
-                      ))
-                  : Row(
+                    Row(
                       children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.grey[100],
-                          child: Icon(
-                            Icons.watch_later_outlined,
-                            color: Colors.grey[500],
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Total Balance  ',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              '${totalPalance ?? 100.0} USD',
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        const Text(
-                          'No transaction yet',
-                          style: TextStyle(color: Colors.grey, fontSize: 18),
-                        )
                       ],
                     ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                'Excahnge rate',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(25),
-                child: Image.asset('images/chart.png'),
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              const Text(
-                'Do more with Wise',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Container(
-                height: 200,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return ClipRRect(
-                        borderRadius: BorderRadius.circular(25),
-                        child: Image.asset(
-                          imagesList[index],
-                          width: 200,
-                          height: 150,
-                          fit: BoxFit.fill,
-                        ));
-                  },
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(width: 10),
-                  itemCount: imagesList.length,
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          'Transactions',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const Expanded(child: SizedBox()),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const TransactionsList(),
+                                ));
+                          },
+                          child: const Text(
+                            'See all',
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    listData.isNotEmpty
+                        ? SizedBox(
+                            height: listData.length >= 3
+                                ? 180
+                                : listData.length == 2
+                                    ? 120
+                                    : listData.length == 1
+                                        ? 60
+                                        : 0,
+                            child: ListView.separated(
+                              shrinkWrap: true,
+                              itemCount:
+                                  listData.length > 3 ? 3 : listData.length,
+                              itemBuilder: (context, index) {
+                                final reversedIndex =
+                                    listData.length - 1 - index;
+                                return transactionsItem(context,
+                                    userName: listData[reversedIndex].userName,
+                                    mony: listData[reversedIndex].ammount,
+                                    sent: listData[reversedIndex].sent,
+                                    id: listData[reversedIndex].id,
+                                    time: listData[reversedIndex].time);
+                              },
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(height: 10),
+                            ))
+                        : Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: Colors.grey[100],
+                                child: Icon(
+                                  Icons.watch_later_outlined,
+                                  color: Colors.grey[500],
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              const Text(
+                                'No transaction yet',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 18),
+                              )
+                            ],
+                          ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      'Excahnge rate',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: Image.asset('images/chart.png'),
+                    ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    const Text(
+                      'Do more with Wise',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      height: 200,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return ClipRRect(
+                              borderRadius: BorderRadius.circular(25),
+                              child: Image.asset(
+                                imagesList[index],
+                                width: 200,
+                                height: 150,
+                                fit: BoxFit.fill,
+                              ));
+                        },
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(width: 10),
+                        itemCount: imagesList.length,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(
-                height: 30,
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }
@@ -310,18 +335,18 @@ Widget transactionsItem(BuildContext context,
     },
     child: Dismissible(
       direction: DismissDirection.horizontal,
-      onDismissed: (direction)async {
-        await deleteItem(id??0);
-        Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) =>  MainView()));
-         Fluttertoast.showToast(
-        msg: "Transaction is deleted",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
+      onDismissed: (direction) async {
+        await deleteItem(id ?? 0);
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => MainView()));
+        Fluttertoast.showToast(
+            msg: "Transaction is deleted",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
       },
       key: Key(id.toString()),
       child: Row(
@@ -330,7 +355,8 @@ Widget transactionsItem(BuildContext context,
           CircleAvatar(
             radius: home == true ? 25 : 35,
             backgroundColor: Colors.grey[200],
-            child: Icon(sent == true ? Icons.arrow_upward : Icons.arrow_downward),
+            child:
+                Icon(sent == true ? Icons.arrow_upward : Icons.arrow_downward),
           ),
           const SizedBox(
             width: 20,
@@ -377,21 +403,20 @@ Future<void> getAllLocalTrans() async {
   debugPrint('listt : $listData');
 }
 
-addItemToLocal(DetailsData item)async{
-persons = await Hive.openBox('trans');
-persons?.add(item);
+addItemToLocal(DetailsData item) async {
+  persons = await Hive.openBox('trans');
+  persons?.add(item);
 }
 
- deleteItem(int id) async{
-    persons = await Hive.openBox('trans');
+deleteItem(int id) async {
+  persons = await Hive.openBox('trans');
 
-    final Map<dynamic, DetailsData> deliveriesMap = persons!.toMap();
-    dynamic desiredKey;
-    deliveriesMap.forEach((key, value){
-        if (value.id == id) {
-          desiredKey = key;
-        }
-    });
-    persons?.delete(desiredKey);
-   
-  }
+  final Map<dynamic, DetailsData> deliveriesMap = persons!.toMap();
+  dynamic desiredKey;
+  deliveriesMap.forEach((key, value) {
+    if (value.id == id) {
+      desiredKey = key;
+    }
+  });
+  persons?.delete(desiredKey);
+}

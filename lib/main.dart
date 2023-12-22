@@ -5,12 +5,13 @@ import 'package:hive/hive.dart';
 import 'package:wise_clone/models/trans.dart';
 import 'package:wise_clone/screens/home.dart';
 import 'package:wise_clone/screens/main_view.dart';
-import 'package:wise_clone/screens/trans_list.dart';
 import 'package:wise_clone/screens/widgets.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
 FToast? fToast;
 HexColor mainColor = HexColor('#87EA5C');
 Box<DetailsData>? persons;
+
 void main() async{
   image = null;
     imagePath = null;

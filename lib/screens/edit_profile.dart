@@ -118,8 +118,9 @@ class _EditProfileState extends State<EditProfile> {
                           TextButton(
                             child: Text('Edit'),
                             onPressed: () async {
-                              userName = controller.text;
-                              firstChar = getInitials(controller.text);
+                              // userName = controller.text;
+                              saveProfileName(controller.text);
+                              firstChar = getInitials(await getProfileName()??'');
                               setState(() {});
                               Navigator.pushReplacement(
                                   context,
@@ -369,3 +370,5 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 }
+
+
