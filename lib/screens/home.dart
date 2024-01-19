@@ -7,7 +7,7 @@ import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wise_clone/main.dart';
 import 'package:wise_clone/screens/coins_accounts/dollar/dollar_account.dart';
-import 'package:wise_clone/screens/coins_accounts/euro/euro_accoint.dart';
+import 'package:wise_clone/screens/coins_accounts/euro/euro_account.dart';
 import 'package:wise_clone/screens/main_view.dart';
 import 'package:wise_clone/screens/settings.dart';
 import 'package:wise_clone/screens/trans_details.dart';
@@ -368,7 +368,7 @@ Widget radiusButton({required String? txt}) {
       color: mainColor,
       borderRadius: BorderRadius.circular(25),
     ),
-    child: Text(txt ?? ''),
+    child: Text(txt ?? '',style: TextStyle(fontWeight: FontWeight.w700),),
   );
 }
 

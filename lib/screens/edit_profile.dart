@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:wise_clone/cash_helper.dart';
 import 'package:wise_clone/main.dart';
 import 'package:wise_clone/models/trans.dart';
 import 'package:wise_clone/screens/home.dart';
@@ -11,6 +12,8 @@ import 'package:wise_clone/screens/main_view.dart';
 import 'package:wise_clone/screens/settings.dart';
 import 'package:wise_clone/screens/trans_list.dart';
 import 'package:wise_clone/screens/widgets.dart';
+
+enum SingingCharacter { EUR, USD }
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -119,20 +122,21 @@ class _EditProfileState extends State<EditProfile> {
                           TextButton(
                             child: const Text('Edit'),
                             onPressed: () async {
-                              if(controller.text.isNotEmpty){
-                               saveProfileName(controller.text);
-                              firstChar = getInitials(await getProfileName()??'');
-                              setState(() {});
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MainView(),
-                                  ));
-                                  showMessage(msg:'Sucsess',sucsess: true);
-                              }else{
-                                    showMessage(msg:'No value added',sucsess: false);
+                              if (controller.text.isNotEmpty) {
+                                saveProfileName(controller.text);
+                                firstChar =
+                                    getInitials(await getProfileName() ?? '');
+                                setState(() {});
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const MainView(),
+                                    ));
+                                showMessage(msg: 'Sucsess', sucsess: true);
+                              } else {
+                                showMessage(
+                                    msg: 'No value added', sucsess: false);
                               }
-                              
                             },
                           ),
                           TextButton(
@@ -156,6 +160,7 @@ class _EditProfileState extends State<EditProfile> {
                   TextButton(
                     child: const Text('Add Transaction'),
                     onPressed: () {
+                      SingingCharacter? _character = SingingCharacter.EUR;
                       TextEditingController toController =
                           TextEditingController();
                       TextEditingController valueController =
@@ -172,7 +177,7 @@ class _EditProfileState extends State<EditProfile> {
                           child: AlertDialog(
                             content: SizedBox(
                               width: 500,
-                              height: 350,
+                              height: 500,
                               child: Column(
                                 children: [
                                   AppTextField(
@@ -248,6 +253,38 @@ class _EditProfileState extends State<EditProfile> {
                                         ),
                                       ],
                                     ),
+                                  ),
+                                  StatefulBuilder(
+                                    builder: (context, setState) => Column(
+                                      children: <Widget>[
+                                        ListTile(
+                                          title: const Text('USD'),
+                                          leading: Radio<SingingCharacter>(
+                                            value: SingingCharacter.USD,
+                                            groupValue: _character,
+                                            onChanged:
+                                                (SingingCharacter? value) {
+                                              setState(() {
+                                                _character = value;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        ListTile(
+                                          title: const Text('EUR'),
+                                          leading: Radio<SingingCharacter>(
+                                            value: SingingCharacter.EUR,
+                                            groupValue: _character,
+                                            onChanged:
+                                                (SingingCharacter? value) {
+                                              setState(() {
+                                                _character = value;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   )
                                 ],
                               ),
@@ -256,10 +293,19 @@ class _EditProfileState extends State<EditProfile> {
                               TextButton(
                                 child: const Text('Send'),
                                 onPressed: () async {
+
+                                  int? accountType;
+                                  if (_character == SingingCharacter.EUR) {
+                                      debugPrint('_character 1');
+                                    }
+                                    if (_character == SingingCharacter.USD) {
+                                      debugPrint('_character 2');
+                                    }
                                   if (idController.text.isEmpty ||
                                       toController.text.isEmpty ||
                                       valueController.text.isEmpty ||
-                                      timeController.text.isEmpty) {
+                                      timeController.text.isEmpty||
+                                      accountType==null) {
                                     Fluttertoast.showToast(
                                         msg: "Please Fill all data",
                                         toastLength: Toast.LENGTH_SHORT,
@@ -269,12 +315,14 @@ class _EditProfileState extends State<EditProfile> {
                                         textColor: Colors.white,
                                         fontSize: 16.0);
                                   } else {
+                                    
                                     await addItemToLocal(DetailsData(
                                       ammount: valueController.text,
                                       sent: sent,
                                       userName: toController.text,
                                       id: int.parse(idController.text),
                                       time: DateTime.parse(timeController.text),
+                                      accountType:accountType
                                     ));
 
                                     Navigator.pushReplacement(
@@ -310,7 +358,9 @@ class _EditProfileState extends State<EditProfile> {
                   Icon(Icons.send)
                 ],
               ),
-              SizedBox(height: 50,),
+              SizedBox(
+                height: 50,
+              ),
               TextButton(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -344,24 +394,25 @@ class _EditProfileState extends State<EditProfile> {
                         TextButton(
                           child: const Text('Edit'),
                           onPressed: () async {
-                            if(balanceController.text.isNotEmpty){
-                               // Obtain shared preferences.
-                            final SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                                await prefs.setString('totalPalance' , balanceController.text );
-                            // totalPalance = balanceController.text;
-                            setState(() {});
-                            showMessage(msg:'Sucsess',sucsess: true);
-                            // ignore: use_build_context_synchronously
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MainView(),
-                                ));
-                            }else{
-                               showMessage(msg:'No value added',sucsess: false);
+                            if (balanceController.text.isNotEmpty) {
+                              // Obtain shared preferences.
+                              final SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              await prefs.setString(
+                                  'totalPalance', balanceController.text);
+                              // totalPalance = balanceController.text;
+                              setState(() {});
+                              showMessage(msg: 'Sucsess', sucsess: true);
+                              // ignore: use_build_context_synchronously
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const MainView(),
+                                  ));
+                            } else {
+                              showMessage(
+                                  msg: 'No value added', sucsess: false);
                             }
-                            
                           },
                         ),
                         TextButton(
@@ -376,6 +427,247 @@ class _EditProfileState extends State<EditProfile> {
                   );
                 },
               ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    child: const Text('Add EUR Information'),
+                    onPressed: () {
+                      TextEditingController holderController =
+                          TextEditingController();
+                      TextEditingController sortCodeController =
+                          TextEditingController();
+                      TextEditingController accountNamberController =
+                          TextEditingController();
+                      TextEditingController iBAnController =
+                          TextEditingController();
+
+                      showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (context) => SingleChildScrollView(
+                          child: AlertDialog(
+                            content: SizedBox(
+                              width: 500,
+                              height: 370,
+                              child: Column(
+                                children: [
+                                  AppTextField(
+                                      controller: holderController,
+                                      keyboardType: TextInputType.text,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'holder',
+                                      label: 'holder'),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  AppTextField(
+                                      controller: sortCodeController,
+                                      keyboardType: TextInputType.text,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'sort code',
+                                      label: 'sort code'),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  AppTextField(
+                                      controller: accountNamberController,
+                                      keyboardType: TextInputType.text,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'account number',
+                                      label: 'account number'),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  AppTextField(
+                                      controller: iBAnController,
+                                      keyboardType: TextInputType.text,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'IBAN',
+                                      label: 'IBAN'),
+                                ],
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                child: const Text('Send'),
+                                onPressed: () async {
+                                  if (holderController.text.isEmpty ||
+                                      sortCodeController.text.isEmpty ||
+                                      accountNamberController.text.isEmpty ||
+                                      iBAnController.text.isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg: "Please Fill all data",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  } else {
+                                    CacheHelper.addStringToCache(
+                                        key: 'EUR_holder',
+                                        value: holderController.text);
+                                    CacheHelper.addStringToCache(
+                                        key: 'EUR_sort_code',
+                                        value: sortCodeController.text);
+                                    CacheHelper.addStringToCache(
+                                        key: 'EUR_account_number',
+                                        value: accountNamberController.text);
+                                    CacheHelper.addStringToCache(
+                                        key: 'EUR_IBAN',
+                                        value: iBAnController.text);
+
+                                    Fluttertoast.showToast(
+                                        msg: "EUR is Updated",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.green,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                    Navigator.pop(context);
+                                  }
+                                },
+                              ),
+                              TextButton(
+                                child: const Text('Cancel'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                            title: const Text('Add EUR Information'),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  Icon(Icons.send)
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    child: const Text('Add USD Information'),
+                    onPressed: () {
+                      TextEditingController holderController =
+                          TextEditingController();
+                      TextEditingController sortCodeController =
+                          TextEditingController();
+                      TextEditingController accountNamberController =
+                          TextEditingController();
+                      TextEditingController iBAnController =
+                          TextEditingController();
+
+                      showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (context) => SingleChildScrollView(
+                          child: AlertDialog(
+                            content: SizedBox(
+                              width: 500,
+                              height: 370,
+                              child: Column(
+                                children: [
+                                  AppTextField(
+                                      controller: holderController,
+                                      keyboardType: TextInputType.text,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'holder',
+                                      label: 'holder'),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  AppTextField(
+                                      controller: sortCodeController,
+                                      keyboardType: TextInputType.text,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'sort code',
+                                      label: 'sort code'),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  AppTextField(
+                                      controller: accountNamberController,
+                                      keyboardType: TextInputType.text,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'account number',
+                                      label: 'account number'),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  AppTextField(
+                                      controller: iBAnController,
+                                      keyboardType: TextInputType.text,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'IBAN',
+                                      label: 'IBAN'),
+                                ],
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                child: const Text('Send'),
+                                onPressed: () async {
+                                  if (holderController.text.isEmpty ||
+                                      sortCodeController.text.isEmpty ||
+                                      accountNamberController.text.isEmpty ||
+                                      iBAnController.text.isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg: "Please Fill all data",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  } else {
+                                    CacheHelper.addStringToCache(
+                                        key: 'USD_holder',
+                                        value: holderController.text);
+                                    CacheHelper.addStringToCache(
+                                        key: 'USD_sort_code',
+                                        value: sortCodeController.text);
+                                    CacheHelper.addStringToCache(
+                                        key: 'USD_account_number',
+                                        value: accountNamberController.text);
+                                    CacheHelper.addStringToCache(
+                                        key: 'USD_IBAN',
+                                        value: iBAnController.text);
+
+                                    Fluttertoast.showToast(
+                                        msg: "USD is Updated",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.green,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                    Navigator.pop(context);
+                                  }
+                                },
+                              ),
+                              TextButton(
+                                child: const Text('Cancel'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                            title: const Text('Add USD Information'),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  Icon(Icons.send)
+                ],
+              )
             ],
           ),
         ),
@@ -383,5 +675,3 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 }
-
-

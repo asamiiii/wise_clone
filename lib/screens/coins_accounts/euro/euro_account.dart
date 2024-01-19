@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wise_clone/cash_helper.dart';
 import 'package:wise_clone/main.dart';
+import 'package:wise_clone/screens/coins_accounts/euro/account_details_model.dart';
+import 'package:wise_clone/screens/coins_accounts/euro/euro_de.dart';
 import 'package:wise_clone/screens/home.dart';
 import 'package:wise_clone/screens/trans_list.dart';
 
@@ -60,24 +63,40 @@ class EuroAccount extends StatelessWidget {
               SizedBox(
                 height: screenHeight * 0.01,
               ),
-              Row(
-                children: [
-                  CircleAvatar(
-                      radius: screenWidth * 0.03,
-                      backgroundColor: Colors.grey[200],
-                      child: const Icon(Icons.assured_workload)),
-                  SizedBox(
-                    width: screenWidth * 0.01,
-                  ),
-                  const Text(
-                    'B311950903',
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500
+              GestureDetector(
+                onTap: () async{
+                  String? holder = await CacheHelper.getStringFromCache(key: 'EUR_holder')??'' ;
+                  String? sortCode =await CacheHelper.getStringFromCache(key: 'EUR_sort_code')??'';
+                  String? accountNumber =await  CacheHelper.getStringFromCache(key: 'EUR_account_number')??'';
+                  String? iBAN = await CacheHelper.getStringFromCache(key: 'EUR_IBAN')??'';
+                   showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context, builder: (context) => Container(
+                      width: screenWidth,
+                      height: screenHeight*0.95,
+                      child:  EuroDetails(accountDetails: AccountDetails(accountHolder: holder,accountNumber: accountNumber,iBAN: iBAN,sortCode: sortCode)),
+                    ),);
+                    
+                },
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                        radius: screenWidth * 0.03,
+                        backgroundColor: Colors.grey[200],
+                        child: const Icon(Icons.assured_workload)),
+                    SizedBox(
+                      width: screenWidth * 0.01,
                     ),
-                  ),
-                ],
+                    const Text(
+                      'B311950903',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const Text(
                 '100.00 EUR',
@@ -104,7 +123,7 @@ class EuroAccount extends StatelessWidget {
                               inherit: false,
                               color: Colors.black,
                               fontSize: 35.0,
-                              fontWeight: FontWeight.w100,
+                              fontWeight: FontWeight.normal,
                               fontFamily: CupertinoIcons
                                   .exclamationmark_circle.fontFamily,
                               package: CupertinoIcons
