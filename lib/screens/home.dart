@@ -162,17 +162,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Stack(
                               children: [
                                 Positioned(
-                                  top: 10,
-                                  left: 10,
+                                  top: 15,
+                                  left: 15,
                                 child: CircleAvatar(
-                                  radius: 25,
+                                  radius: screenWidth*0.08,
                                   backgroundImage: AssetImage('images/flag$index.png'),
                                 ),
                               ),
                           
                               Positioned(
                                 bottom: 10,
-                                left: 10,
+                                left: 15,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
