@@ -12,22 +12,21 @@ FToast? fToast;
 HexColor mainColor = HexColor('#87EA5C');
 Box<DetailsData>? persons;
 
-void main() async{
+void main() async {
   image = null;
-    imagePath = null;
-    
-    await Hive.initFlutter();
-    Hive.registerAdapter(DetailsDataAdapter());
-   persons = await Hive.openBox('trans');
+  imagePath = null;
+
+  await Hive.initFlutter();
+  Hive.registerAdapter(DetailsDataAdapter());
+  persons = await Hive.openBox('trans');
   //  debugPrint('dummyData : $dummyData ');
-  //  for (var element in dummyData) { 
+  //  for (var element in dummyData) {
   //   persons?.add(element);
   //  }
   // getAllLocalTrans();
   // persons?.clear();
 
   runApp(const MyApp());
-  
 }
 
 class MyApp extends StatelessWidget {
@@ -50,16 +49,15 @@ class MyApp extends StatelessWidget {
 }
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key,});
-
- 
+  const SplashScreen({
+    super.key,
+  });
 
   @override
   State<SplashScreen> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<SplashScreen> {
-
   @override
   void initState() {
     init();
@@ -73,19 +71,34 @@ class _MyHomePageState extends State<SplashScreen> {
   Future checkFirstSeen() async {
     await Future.delayed(const Duration(seconds: 1));
     // ignore: use_build_context_synchronously
-    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const MainView(),));
-   
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MainView(),
+        ));
   }
-
- 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: HexColor('#87EA5C'),
-      body:  Center(
-        child: Image.asset('images/logo.webp',height: 120,width: 120,)
-      ),
+      body: Center(
+          child: Image.asset(
+        'images/logo.webp',
+        height: 120,
+        width: 120,
+      )),
     );
   }
+}
+
+showMessage({String? msg,bool? sucsess}) {
+  Fluttertoast.showToast(
+      msg: msg ?? '',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: sucsess==true?Colors.green: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }

@@ -2,9 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wise_clone/main.dart';
+import 'package:wise_clone/screens/coins_accounts/dollar/dollar_account.dart';
+import 'package:wise_clone/screens/coins_accounts/euro/euro_accoint.dart';
 import 'package:wise_clone/screens/main_view.dart';
 import 'package:wise_clone/screens/settings.dart';
 import 'package:wise_clone/screens/trans_details.dart';
@@ -65,6 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var screenWidth = MediaQuery.of(context).size.width;
+    var screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -106,35 +111,91 @@ class _HomeScreenState extends State<HomeScreen> {
                           TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(
-                      height: 15,
+                      height: 10,
                     ),
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Total Balance  ',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Text(
-                              '${totalPalance ?? 100.0} USD',
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                    // Row(
+                    //   children: [
+                    //     Column(
+                    //       crossAxisAlignment: CrossAxisAlignment.start,
+                    //       mainAxisAlignment: MainAxisAlignment.start,
+                    //       children: [
+                    //         Text(
+                    //           'Total Balance  ',
+                    //           style: TextStyle(
+                    //             fontSize: 15,
+                    //             fontWeight: FontWeight.w500,
+                    //           ),
+                    //         ),
+                    //         Text(
+                    //           '${totalPalance ?? 100.0} USD',
+                    //           style: TextStyle(
+                    //             fontSize: 30,
+                    //             fontWeight: FontWeight.w500,
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ],
+                    // ),
+                    SizedBox(
+                      height: 10,
                     ),
                     SizedBox(
-                      height: 20,
+                      height: screenHeight*0.25,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder:(context, index) =>  InkWell(
+                          onTap: () {
+                            if(index ==0){
+                                Navigator.push(context, MaterialPageRoute(builder:(context) =>  const EuroAccount()));
+                            }else if(index==1){
+                                Navigator.push(context, MaterialPageRoute(builder:(context) =>  const DollarAccount()));
+                            }
+                          },
+                          child: Container(
+                            width: screenWidth*0.55,
+                            height: screenHeight*0.30,
+                            decoration: BoxDecoration(
+                              color: HexColor('#eeefea'),
+                              borderRadius: BorderRadius.circular(15)
+                            ),
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  top: 10,
+                                  left: 10,
+                                child: CircleAvatar(
+                                  radius: 25,
+                                  backgroundImage: AssetImage('images/flag$index.png'),
+                                ),
+                              ),
+                          
+                              Positioned(
+                                bottom: 10,
+                                left: 10,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('3.418.00',style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            )),
+                          
+                            Text( index==0? 'EUR': 'USD' )
+                                  ],
+                                )
+                              )
+                              ],
+                              
+                            ),
+                          ),
+                        ),
+                        itemCount: 2,
+                        separatorBuilder: (context, index) => const SizedBox(width: 10,),
+                        ),
                     ),
+                    SizedBox(height: screenHeight*0.05,),
                     Row(
                       children: [
                         const Text(
@@ -154,18 +215,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                       const TransactionsList(),
                                 ));
                           },
-                          child: const Text(
+                          child: listData.isNotEmpty ? const Text(
                             'See all',
                             style: TextStyle(
                               decoration: TextDecoration.underline,
                               fontSize: 15,
                             ),
-                          ),
+                          ):const SizedBox(),
                         ),
                       ],
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     listData.isNotEmpty
                         ? SizedBox(
@@ -213,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                     const SizedBox(
-                      height: 20,
+                      height: 15,
                     ),
                     const Text(
                       'Excahnge rate',

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:wise_clone/main.dart';
 import 'package:wise_clone/models/trans.dart';
 import 'package:wise_clone/screens/home.dart';
 import 'package:wise_clone/screens/main_view.dart';
@@ -116,10 +117,10 @@ class _EditProfileState extends State<EditProfile> {
                         ),
                         actions: [
                           TextButton(
-                            child: Text('Edit'),
+                            child: const Text('Edit'),
                             onPressed: () async {
-                              // userName = controller.text;
-                              saveProfileName(controller.text);
+                              if(controller.text.isNotEmpty){
+                               saveProfileName(controller.text);
                               firstChar = getInitials(await getProfileName()??'');
                               setState(() {});
                               Navigator.pushReplacement(
@@ -127,6 +128,11 @@ class _EditProfileState extends State<EditProfile> {
                                   MaterialPageRoute(
                                     builder: (context) => const MainView(),
                                   ));
+                                  showMessage(msg:'Sucsess',sucsess: true);
+                              }else{
+                                    showMessage(msg:'No value added',sucsess: false);
+                              }
+                              
                             },
                           ),
                           TextButton(
@@ -327,7 +333,7 @@ class _EditProfileState extends State<EditProfile> {
                           children: [
                             AppTextField(
                                 controller: balanceController,
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.number,
                                 icon: const Icon(Icons.abc),
                                 hintText: 'Balance',
                                 label: 'Balance'),
@@ -338,17 +344,24 @@ class _EditProfileState extends State<EditProfile> {
                         TextButton(
                           child: const Text('Edit'),
                           onPressed: () async {
-                            // Obtain shared preferences.
+                            if(balanceController.text.isNotEmpty){
+                               // Obtain shared preferences.
                             final SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
                                 await prefs.setString('totalPalance' , balanceController.text );
                             // totalPalance = balanceController.text;
                             setState(() {});
+                            showMessage(msg:'Sucsess',sucsess: true);
+                            // ignore: use_build_context_synchronously
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => const MainView(),
                                 ));
+                            }else{
+                               showMessage(msg:'No value added',sucsess: false);
+                            }
+                            
                           },
                         ),
                         TextButton(
