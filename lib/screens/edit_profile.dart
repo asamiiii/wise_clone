@@ -682,7 +682,7 @@ class _EditProfileState extends State<EditProfile> {
                                         backgroundColor: Colors.green,
                                         textColor: Colors.white,
                                         fontSize: 16.0);
-                                    Navigator.pop(context);
+                                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const MainView(),));
                                   }
                                 },
                               ),
@@ -801,7 +801,7 @@ class _EditProfileState extends State<EditProfile> {
                                         backgroundColor: Colors.green,
                                         textColor: Colors.white,
                                         fontSize: 16.0);
-                                    Navigator.pop(context);
+                                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const MainView(),));
                                   }
                                 },
                               ),
@@ -921,7 +921,7 @@ class _EditProfileState extends State<EditProfile> {
                                         backgroundColor: Colors.green,
                                         textColor: Colors.white,
                                         fontSize: 16.0);
-                                    Navigator.pop(context);
+                                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const MainView(),));
                                   }
                                 },
                               ),

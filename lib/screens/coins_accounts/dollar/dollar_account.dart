@@ -18,6 +18,7 @@ class DollarAccount extends StatefulWidget {
 class _DollarAccountState extends State<DollarAccount> {
     String? usdTotalPalance;
   bool isLoading = false;
+  String? eurAccountNumber;
   @override
   void initState() {
     isLoading = true;
@@ -25,6 +26,7 @@ class _DollarAccountState extends State<DollarAccount> {
       
              final SharedPreferences prefs = await SharedPreferences.getInstance();
     usdTotalPalance = prefs.getString('USD_totalPalance');
+    eurAccountNumber = prefs.getString('USD_account_number')??'Un known';
     isLoading=false;
     setState(() {
       
@@ -111,8 +113,8 @@ class _DollarAccountState extends State<DollarAccount> {
                     const SizedBox(
                       width: 10,
                     ),
-                    const Text(
-                      'B311950903',
+                     Text(
+                      eurAccountNumber??'',
                       style: TextStyle(
                         decoration: TextDecoration.underline,
                         fontSize: 15,
@@ -123,7 +125,7 @@ class _DollarAccountState extends State<DollarAccount> {
                 ),
               ),
                Text(
-                '${usdTotalPalance??''} EUR',
+                '${usdTotalPalance??''} USD',
                 style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.w500,

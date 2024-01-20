@@ -20,6 +20,9 @@ class _TransDetailsState extends State<TransDetails> {
 
   @override
   void initState() {
+    if(widget.data?.sent==false){
+      currentIndex=1;
+    }
     debugPrint('id : ${widget.data?.time}');
     super.initState();
   }
@@ -87,16 +90,16 @@ class _TransDetailsState extends State<TransDetails> {
                       child:  Icon(widget.data?.sent==true?Icons.arrow_upward:Icons.arrow_downward,size: 40,),
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 5,
                     ),
                      Text(
                       widget.data?.sent==true? 'Sent':'Recived',
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 5,
                     ),
                      Text(
-                      '${widget.data?.ammount} ${widget.data?.accountType ==1?'EUR':widget.data?.accountType ==2?'USD':'GBP'}',
+                      '${widget.data?.sent==true?'-':'+'} ${widget.data?.ammount} ${widget.data?.accountType ==1?'EUR':widget.data?.accountType ==2?'USD':'GBP'}',
                       style: const TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -107,7 +110,7 @@ class _TransDetailsState extends State<TransDetails> {
                       style: const TextStyle(color: Colors.black54),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Container(
                       height: 40,
@@ -126,14 +129,14 @@ class _TransDetailsState extends State<TransDetails> {
                           SizedBox(
                             width: 5,
                           ),
-                          Text('General'),
+                          Text(widget.data?.sent==true? 'General':'Money added'),
                         ],
                       ),
                     ),
                     SizedBox(
                       height: 30,
                     ),
-                    ToggleSwitch(
+                    widget.data?.sent==true? ToggleSwitch(
                       minWidth: 230.0,
                       minHeight: 60.0,
                       fontSize: 16.0,
@@ -151,8 +154,8 @@ class _TransDetailsState extends State<TransDetails> {
                         setState(() {});
                         debugPrint('switched to: $index');
                       },
-                    ),
-                    Row(
+                    ):const SizedBox(),
+                    widget.data?.sent==true? Row(
                       children: [
                         currentIndex==0? Container(
                           color: Colors.black,
@@ -166,7 +169,7 @@ class _TransDetailsState extends State<TransDetails> {
                           width: MediaQuery.of(context).size.width*0.50,
                         ):SizedBox(width: MediaQuery.of(context).size.width*0.50),
                       ],
-                    )
+                    ):const SizedBox()
                   ],
                 ),
               ],
@@ -290,8 +293,8 @@ Widget detailsSection ({DetailsData? data}){
                     ),
             ],
           ),
-SizedBox(height: 15,),
-          Row(
+data?.sent==true?  SizedBox(height: 15,):SizedBox(),
+         data?.sent==true?  Row(
             children: [
               Text(
                       'Our commission',
@@ -303,13 +306,13 @@ SizedBox(height: 15,),
                       // style: TextStyle(color: Colors.black54),
                     ),
             ],
-          ),
-        const SizedBox(height: 20,),
+          ):SizedBox(),
+        data?.sent==true?  const SizedBox(height: 20,):SizedBox(),
           // const Divider(
           //   color: Colors.black,),
-          const DottedLine(),
+          data?.sent==true?  const DottedLine():SizedBox(),
             const SizedBox(height: 20,),
-          Row(
+           data?.sent==true?  Row(
             children: [
               Text(
                       data?.sent==true? '${data?.userName} has received':'${data?.userName} has Sent',
@@ -321,7 +324,7 @@ SizedBox(height: 15,),
                       // style: TextStyle(color: Colors.black54),
                     ),
             ],
-          ),
+          ):const SizedBox(),
           const SizedBox(height: 20,),
           // Divider(
           //   color: Colors.black,),

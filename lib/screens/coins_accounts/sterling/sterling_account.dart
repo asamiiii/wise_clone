@@ -17,6 +17,7 @@ class SterlingAccount extends StatefulWidget {
 
 class _SterlingAccountState extends State<SterlingAccount> {
   String? eurTotalPalance;
+  String? eurAccountNumber;
   bool isLoading = false;
   @override
   void initState() {
@@ -24,7 +25,8 @@ class _SterlingAccountState extends State<SterlingAccount> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       
              final SharedPreferences prefs = await SharedPreferences.getInstance();
-    eurTotalPalance = prefs.getString('EUR_totalPalance');
+    eurTotalPalance = prefs.getString('GBP_totalPalance')??'Un known';
+     eurAccountNumber = prefs.getString('GBP_account_number')??'Un known';
     isLoading=false;
     setState(() {
       
@@ -111,8 +113,8 @@ class _SterlingAccountState extends State<SterlingAccount> {
                     const SizedBox(
                       width: 10,
                     ),
-                    const Text(
-                      'B311950903',
+                     Text(
+                      eurAccountNumber??'',
                       style: TextStyle(
                         decoration: TextDecoration.underline,
                         fontSize: 15,
@@ -123,7 +125,7 @@ class _SterlingAccountState extends State<SterlingAccount> {
                 ),
               ),
                Text(
-                '${eurTotalPalance??''} EUR',
+                '${eurTotalPalance??''}  GBP',
                 style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.w500,

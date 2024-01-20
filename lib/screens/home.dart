@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wise_clone/cash_helper.dart';
 import 'package:wise_clone/main.dart';
 import 'package:wise_clone/screens/coins_accounts/dollar/dollar_account.dart';
 import 'package:wise_clone/screens/coins_accounts/euro/euro_account.dart';
@@ -32,6 +34,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = false;
+  String? eurAccountNumber;
+  String? usdAccountNumber;
+  String? gbpAccountNumber;
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -42,6 +47,9 @@ class _HomeScreenState extends State<HomeScreen> {
       eurTotalPalance = prefs.getString('EUR_totalPalance');
       usdTotalPalance = prefs.getString('USD_totalPalance');
       gbpTotalPalance = prefs.getString('GBP_totalPalance');
+      eurAccountNumber =await  CacheHelper.getStringFromCache(key: 'EUR_account_number')??'Un Known';
+      usdAccountNumber =await  CacheHelper.getStringFromCache(key: 'USD_account_number')??'Un Known';
+      gbpAccountNumber =await  CacheHelper.getStringFromCache(key: 'GBP_account_number')??'Un Known';
       userName =await getProfileName()??'AS';
       firstChar = getInitials(await getProfileName()??'AS'); 
       var profileImagePath = prefs.getString('profile_image');
@@ -58,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // You can display a placeholder image or show an error message
         }
       }
-
+      // eurTotalPalance = prefs.getString('EUR_totalPalance');
       await getAllLocalTrans();
       listData.sort((a, b) => a.time!.compareTo(b.time!));
       debugPrint('list dat : $listData');
@@ -109,9 +117,34 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Account',
+                      'Total balance',
                       style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w300,),
+                    ),
+                    Row(
+                      children: [
+                        Text('**** USD',style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                                SizedBox(width: 5,),
+                                CircleAvatar(
+                                  radius: 10,
+                                  backgroundColor: HexColor('#eeefea'),
+                                  child: Icon(Icons.signal_cellular_alt_sharp,size: 10,))
+                      ],
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                      children: [
+                        radiusButton(txt: 'Send',icon: Icons.arrow_upward_outlined),
+                        SizedBox(width: 5,),
+                        radiusButton(txt: 'Add money',icon: Icons.add,color: HexColor('#eeefea'),diffColor: true),
+                        SizedBox(width: 5,),
+                        radiusButton(txt: 'Add money',icon: Icons.arrow_downward_rounded,color: HexColor('#eeefea'),diffColor: true),
+                      ],
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -176,18 +209,42 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                           
                               Positioned(
+                                top: 30,
+                                left: 80,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                            //         Text(index ==0 ? eurTotalPalance??'100.00':index==1?usdTotalPalance??'100.00':gbpTotalPalance??'150.00',style: TextStyle(
+                            //   fontSize: 18,
+                            //   fontWeight: FontWeight.w500,
+                            // )),
+                          
+                            Text( index==0? 'EUR': index==1? 'USD':'GBP' ,style: TextStyle(fontWeight: FontWeight.w500,fontSize: 17),)
+                                  ],
+                                )
+                              ),
+
+                              Positioned(
                                 bottom: 10,
                                 left: 15,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(index ==0 ? eurTotalPalance??'100.00':index==1?usdTotalPalance??'100.00':gbpTotalPalance??'150.00',style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
+                                    Row(children: [
+                                      Icon(Icons.assured_workload,size: 13,color: Colors.grey,),
+                                      SizedBox(width: 5,),
+                                      SizedBox(
+                                        width: 40,
+                                        child: Text(' ${index == 0? eurAccountNumber:index==1?usdAccountNumber:gbpAccountNumber}',style: TextStyle(color: Colors.grey,fontSize: 10,fontWeight: FontWeight.w700),maxLines: 1,overflow: TextOverflow.ellipsis,textDirection: TextDirection.rtl,))
+                                    ],),
+                                    Text('****',style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
                             )),
                           
-                            Text( index==0? 'EUR': index==1? 'USD':'GBP' )
+                            
                                   ],
                                 )
                               )
@@ -366,15 +423,21 @@ Widget circlName() {
       ));
 }
 
-Widget radiusButton({required String? txt}) {
+Widget radiusButton({required String? txt,IconData? icon,bool? diffColor=false,Color? color}) {
   return Container(
     // height: 40,
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
     decoration: BoxDecoration(
-      color: mainColor,
+      color: diffColor==false? mainColor:color,
       borderRadius: BorderRadius.circular(25),
     ),
-    child: Text(txt ?? '',style: TextStyle(fontWeight: FontWeight.w700),),
+    child: Row(
+      children: [
+        icon != null ? Icon(icon,size: 15,):const SizedBox(),
+        const SizedBox(width: 5,),
+        Text(txt ?? '',style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 10),),
+      ],
+    ),
   );
 }
 
@@ -448,8 +511,8 @@ Widget transactionsItem(BuildContext context,
           ),
           const Expanded(child: SizedBox()),
           Text(
-            '$mony ${accountType==1 ? 'EUR' : accountType ==2? 'USD' : 'GPB'}',
-            style: const TextStyle(fontWeight: FontWeight.w400),
+            '${sent == true?'-':'+'}  $mony ${accountType==1 ? 'EUR' : accountType ==2? 'USD' : 'GPB'}',
+            style: const TextStyle(fontWeight: FontWeight.w600),
           )
         ],
       ),

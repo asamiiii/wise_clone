@@ -17,6 +17,7 @@ class EuroAccount extends StatefulWidget {
 
 class _EuroAccountState extends State<EuroAccount> {
   String? eurTotalPalance;
+  String? eurAccountNumber;
   bool isLoading = false;
   @override
   void initState() {
@@ -24,7 +25,8 @@ class _EuroAccountState extends State<EuroAccount> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       
              final SharedPreferences prefs = await SharedPreferences.getInstance();
-    eurTotalPalance = prefs.getString('EUR_totalPalance');
+    eurTotalPalance = prefs.getString('EUR_totalPalance')??'Un known';
+    eurAccountNumber = prefs.getString('EUR_account_number')??'Un known';
     isLoading=false;
     setState(() {
       
@@ -111,8 +113,8 @@ class _EuroAccountState extends State<EuroAccount> {
                     const SizedBox(
                       width: 10,
                     ),
-                    const Text(
-                      'B311950903',
+                     Text(
+                      '$eurAccountNumber',
                       style: TextStyle(
                         decoration: TextDecoration.underline,
                         fontSize: 15,
