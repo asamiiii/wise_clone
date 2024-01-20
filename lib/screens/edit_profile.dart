@@ -13,7 +13,7 @@ import 'package:wise_clone/screens/settings.dart';
 import 'package:wise_clone/screens/trans_list.dart';
 import 'package:wise_clone/screens/widgets.dart';
 
-enum SingingCharacter { EUR, USD }
+enum SingingCharacter { EUR, USD ,GBP}
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -177,7 +177,7 @@ class _EditProfileState extends State<EditProfile> {
                           child: AlertDialog(
                             content: SizedBox(
                               width: 500,
-                              height: 500,
+                              // height: 500,
                               child: Column(
                                 children: [
                                   AppTextField(
@@ -283,6 +283,19 @@ class _EditProfileState extends State<EditProfile> {
                                             },
                                           ),
                                         ),
+                                        ListTile(
+                                          title: const Text('GBP'),
+                                          leading: Radio<SingingCharacter>(
+                                            value: SingingCharacter.GBP,
+                                            groupValue: _character,
+                                            onChanged:
+                                                (SingingCharacter? value) {
+                                              setState(() {
+                                                _character = value;
+                                              });
+                                            },
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   )
@@ -302,6 +315,10 @@ class _EditProfileState extends State<EditProfile> {
                                     if (_character == SingingCharacter.USD) {
                                       debugPrint('_character 2');
                                       accountType = 2;
+                                    }
+                                    if (_character == SingingCharacter.GBP) {
+                                      debugPrint('_character 3');
+                                      accountType = 3;
                                     }
                                   if (idController.text.isEmpty ||
                                       toController.text.isEmpty ||
@@ -803,7 +820,127 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   Icon(Icons.send)
                 ],
-              )
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    child: const Text('Add GBP Information'),
+                    onPressed: () {
+                      TextEditingController holderController =
+                          TextEditingController();
+                      TextEditingController sortCodeController =
+                          TextEditingController();
+                      TextEditingController accountNamberController =
+                          TextEditingController();
+                      TextEditingController iBAnController =
+                          TextEditingController();
+
+                      showDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (context) => SingleChildScrollView(
+                          child: AlertDialog(
+                            content: SizedBox(
+                              width: 500,
+                              height: 370,
+                              child: Column(
+                                children: [
+                                  AppTextField(
+                                      controller: holderController,
+                                      keyboardType: TextInputType.text,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'holder',
+                                      label: 'holder'),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  AppTextField(
+                                      controller: sortCodeController,
+                                      keyboardType: TextInputType.text,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'sort code',
+                                      label: 'sort code'),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  AppTextField(
+                                      controller: accountNamberController,
+                                      keyboardType: TextInputType.text,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'account number',
+                                      label: 'account number'),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  AppTextField(
+                                      controller: iBAnController,
+                                      keyboardType: TextInputType.text,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'IBAN',
+                                      label: 'IBAN'),
+                                ],
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                child: const Text('Send'),
+                                onPressed: () async {
+                                  if (holderController.text.isEmpty ||
+                                      sortCodeController.text.isEmpty ||
+                                      accountNamberController.text.isEmpty ||
+                                      iBAnController.text.isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg: "Please Fill all data",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  } else {
+                                    CacheHelper.addStringToCache(
+                                        key: 'GBP_holder',
+                                        value: holderController.text);
+                                    CacheHelper.addStringToCache(
+                                        key: 'GBP_sort_code',
+                                        value: sortCodeController.text);
+                                    CacheHelper.addStringToCache(
+                                        key: 'GBP_account_number',
+                                        value: accountNamberController.text);
+                                    CacheHelper.addStringToCache(
+                                        key: 'GBP_IBAN',
+                                        value: iBAnController.text);
+
+                                    Fluttertoast.showToast(
+                                        msg: "GBP is Updated",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.green,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                    Navigator.pop(context);
+                                  }
+                                },
+                              ),
+                              TextButton(
+                                child: const Text('Cancel'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                            title: const Text('Add GBP Information'),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  Icon(Icons.send)
+                ],
+              ),
             ],
           ),
         ),

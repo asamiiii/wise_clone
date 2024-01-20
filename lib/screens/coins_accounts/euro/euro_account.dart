@@ -89,10 +89,10 @@ class _EuroAccountState extends State<EuroAccount> {
               ),
               GestureDetector(
                 onTap: () async{
-                  String? holder = await CacheHelper.getStringFromCache(key: 'EUR_holder')??'' ;
-                  String? sortCode =await CacheHelper.getStringFromCache(key: 'EUR_sort_code')??'';
-                  String? accountNumber =await  CacheHelper.getStringFromCache(key: 'EUR_account_number')??'';
-                  String? iBAN = await CacheHelper.getStringFromCache(key: 'EUR_IBAN')??'';
+                  String? holder = await CacheHelper.getStringFromCache(key: 'EUR_holder')??'Un Known' ;
+                  String? sortCode =await CacheHelper.getStringFromCache(key: 'EUR_sort_code')??'Un Known';
+                  String? accountNumber =await  CacheHelper.getStringFromCache(key: 'EUR_account_number')??'Un Known';
+                  String? iBAN = await CacheHelper.getStringFromCache(key: 'EUR_IBAN')??'Un Known';
                    showModalBottomSheet(
                     isScrollControlled: true,
                     context: context, builder: (context) => Container(

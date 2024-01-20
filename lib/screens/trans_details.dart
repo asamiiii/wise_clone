@@ -25,7 +25,7 @@ class _TransDetailsState extends State<TransDetails> {
   }
   @override
   Widget build(BuildContext context) {
-    List<Widget> sectionsList=[updatesSection(widget.data!.time!),detailsSection(data: widget.data)];
+    List<Widget> sectionsList=[updatesSection(widget.data!.time!,widget.data!),detailsSection(data: widget.data)];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -110,7 +110,7 @@ class _TransDetailsState extends State<TransDetails> {
                       height: 20,
                     ),
                     Container(
-                      height: 35,
+                      height: 40,
                       padding: const EdgeInsets.only(
                           right: 13, left: 5, top: 5, bottom: 5),
                       decoration: BoxDecoration(
@@ -120,12 +120,9 @@ class _TransDetailsState extends State<TransDetails> {
                       child: Row(
                         children: [
                           CircleAvatar(
-                              radius: 15,
-                              backgroundColor: Colors.grey[200],
-                              child: Icon(
-                                Icons.category_outlined,
-                                size: 20,
-                              )),
+                              radius: 20,
+                              backgroundColor: Colors.grey[400],
+                              child:Image.asset('images/cat.png',width: 15,height: 15,)),
                           SizedBox(
                             width: 5,
                           ),
@@ -185,7 +182,7 @@ class _TransDetailsState extends State<TransDetails> {
   }
 }
 
-Widget updatesSection(DateTime time) {
+Widget updatesSection(DateTime time,DetailsData data) {
   return SingleChildScrollView(
     child: Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
@@ -208,10 +205,10 @@ Widget updatesSection(DateTime time) {
             height: 10,
           ),
           //? Time Line Item
-          timeLineItem(time),
-          timeLineItem(time),
-          timeLineItem(time),
-          timeLineItem(lastItem: true,time),
+          timeLineItem(time,msg: 'You set up your transfer'),
+          timeLineItem(time,msg: 'You used ${data.accountType==1?'USD':data.accountType==2?'EUR':'GBP'} in your Wise account'),
+          timeLineItem(time,msg:'We paid out your ${data.accountType==1?'USD':data.accountType==2?'EUR':'GBP'}'),
+          timeLineItem(lastItem: true,time,msg: '',amount: data.ammount,accountType: data.accountType,person: data.userName),
 
           SizedBox(height: 30,),
 
@@ -369,7 +366,7 @@ SizedBox(height: 15,),
 }
 
 
-Widget timeLineItem(DateTime? time,{bool? lastItem=false}){
+Widget timeLineItem(DateTime? time,{bool? lastItem=false,required String? msg,String? amount,int? accountType,String? person}){
   String formattedDate = DateFormat('yyyy-MM-dd').format(time!);
   String formattedTime= DateFormat('kk:mm').format(time);
   return Row(
@@ -386,14 +383,32 @@ Widget timeLineItem(DateTime? time,{bool? lastItem=false}){
                 ],
               ),
               const SizedBox(width: 20,),
-               Column(
+               lastItem==false? Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Text('$formattedDate at $formattedTime'),
-                  Text(lastItem == false ?'You set up your transfer':'Your transfers complete',style: TextStyle(fontWeight: lastItem == true? FontWeight.bold:FontWeight.normal),),
+                  Text('$formattedDate at $formattedTime'),
+                  Text(msg??'',style: TextStyle(fontWeight: lastItem == true? FontWeight.bold:FontWeight.normal),),
                   const SizedBox(height: 10,)
                 ],
+              ):SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('$formattedDate at $formattedTime'),
+                    const Text('Your transfer completed',style: TextStyle(fontWeight:FontWeight.bold),),
+                    Row(
+                      children: [
+                        Text('We sent '),
+                        Text('$amount ${accountType==1?'EUR':accountType==2?'USD':'GBP'}',style: TextStyle(fontWeight: FontWeight.bold),),
+                        Text(' to $person')
+                      ],
+                    ),
+                    
+                    const SizedBox(height: 10,)
+                  ],
+                ),
               )
             ],
           );

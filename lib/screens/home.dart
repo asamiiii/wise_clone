@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wise_clone/main.dart';
 import 'package:wise_clone/screens/coins_accounts/dollar/dollar_account.dart';
 import 'package:wise_clone/screens/coins_accounts/euro/euro_account.dart';
+import 'package:wise_clone/screens/coins_accounts/sterling/sterling_account.dart';
 import 'package:wise_clone/screens/main_view.dart';
 import 'package:wise_clone/screens/settings.dart';
 import 'package:wise_clone/screens/trans_details.dart';
@@ -152,6 +153,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Navigator.push(context, MaterialPageRoute(builder:(context) =>  const EuroAccount()));
                             }else if(index==1){
                                 Navigator.push(context, MaterialPageRoute(builder:(context) =>  const DollarAccount()));
+                            }else if(index==2){
+                               Navigator.push(context, MaterialPageRoute(builder:(context) =>  const SterlingAccount()));
                             }
                           },
                           child: Container(
@@ -184,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontWeight: FontWeight.w500,
                             )),
                           
-                            Text( index==0? 'EUR': 'USD' )
+                            Text( index==0? 'EUR': index==1? 'USD':'GBP' )
                                   ],
                                 )
                               )
@@ -193,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                        itemCount: 2,
+                        itemCount: 3,
                         separatorBuilder: (context, index) => const SizedBox(width: 10,),
                         ),
                     ),
