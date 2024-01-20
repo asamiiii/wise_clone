@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wise_clone/cash_helper.dart';
 import 'package:wise_clone/main.dart';
 import 'package:wise_clone/screens/coins_accounts/euro/account_details_model.dart';
@@ -7,11 +8,34 @@ import 'package:wise_clone/screens/coins_accounts/euro/euro_de.dart';
 import 'package:wise_clone/screens/home.dart';
 import 'package:wise_clone/screens/trans_list.dart';
 
-class EuroAccount extends StatelessWidget {
+class EuroAccount extends StatefulWidget {
   const EuroAccount({super.key});
 
   @override
+  State<EuroAccount> createState() => _EuroAccountState();
+}
+
+class _EuroAccountState extends State<EuroAccount> {
+  String? eurTotalPalance;
+  bool isLoading = false;
+  @override
+  void initState() {
+    isLoading = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      
+             final SharedPreferences prefs = await SharedPreferences.getInstance();
+    eurTotalPalance = prefs.getString('EUR_totalPalance');
+    isLoading=false;
+    setState(() {
+      
+    });
+    });
+
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
+    final filteredListData = listData.where((data) => data.accountType == 1).toList();
     var screenWidth = MediaQuery.of(context).size.width;
     var screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -40,7 +64,7 @@ class EuroAccount extends StatelessWidget {
             ),
           ],
         ),
-        body: Container(
+        body: isLoading==true?const Center(child: CircularProgressIndicator()) :Container(
           padding: EdgeInsets.all(15),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -84,8 +108,8 @@ class EuroAccount extends StatelessWidget {
                         radius: screenWidth * 0.03,
                         backgroundColor: Colors.grey[200],
                         child: const Icon(Icons.assured_workload)),
-                    SizedBox(
-                      width: screenWidth * 0.01,
+                    const SizedBox(
+                      width: 10,
                     ),
                     const Text(
                       'B311950903',
@@ -98,9 +122,9 @@ class EuroAccount extends StatelessWidget {
                   ],
                 ),
               ),
-              const Text(
-                '100.00 EUR',
-                style: TextStyle(
+               Text(
+                '${eurTotalPalance??''} EUR',
+                style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.w500,
                 ),
@@ -267,15 +291,18 @@ class EuroAccount extends StatelessWidget {
                                   : 0,
                       child: ListView.separated(
                         shrinkWrap: true,
-                        itemCount: listData.length > 3 ? 3 : listData.length,
+                        itemCount: filteredListData.length,
                         itemBuilder: (context, index) {
-                          final reversedIndex = listData.length - 1 - index;
+                          
+                          
+                          final reversedIndex = filteredListData.length - 1 - index;
                           return transactionsItem(context,
-                              userName: listData[reversedIndex].userName,
-                              mony: listData[reversedIndex].ammount,
-                              sent: listData[reversedIndex].sent,
-                              id: listData[reversedIndex].id,
-                              time: listData[reversedIndex].time);
+                          accountType: filteredListData[reversedIndex].accountType??0,
+                              userName: filteredListData[reversedIndex].userName,
+                              mony: filteredListData[reversedIndex].ammount,
+                              sent: filteredListData[reversedIndex].sent,
+                              id: filteredListData[reversedIndex].id,
+                              time: filteredListData[reversedIndex].time);
                         },
                         separatorBuilder: (context, index) =>
                             const SizedBox(height: 10),

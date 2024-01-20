@@ -71,6 +71,7 @@ class _TransactionsListState extends State<TransactionsList> {
                     final reversedIndex = listData.length - 1 - index;
                     return transactionsItem(context,
                         home: false,
+                        accountType: listData[reversedIndex].accountType??0,
                         id: listData[reversedIndex].id,
                         time: listData[reversedIndex].time,
                         userName: listData[reversedIndex].userName,

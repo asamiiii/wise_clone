@@ -7,7 +7,9 @@ String getInitials(String bankAccountName) => bankAccountName.isNotEmpty
     : '';
 String? userName = 'AS'; 
 String? firstChar = getInitials(userName??'');
-String? totalPalance;
+String? eurTotalPalance;
+String? usdTotalPalance;
+String? gbpTotalPalance;
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});

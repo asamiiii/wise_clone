@@ -96,7 +96,7 @@ class _TransDetailsState extends State<TransDetails> {
                       height: 10,
                     ),
                      Text(
-                      '${widget.data?.ammount} USD',
+                      '${widget.data?.ammount} ${widget.data?.accountType ==1?'EUR':widget.data?.accountType ==2?'USD':'GBP'}',
                       style: const TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -288,7 +288,7 @@ Widget detailsSection ({DetailsData? data}){
                     ),
                     Expanded(child: SizedBox()),
                     Text(
-                      '${data?.ammount} USD',
+                      '${data?.ammount} ${data?.accountType ==1?'EUR':data?.accountType ==2?'USD':'GBP'}',
                       // style: TextStyle(color: Colors.black54),
                     ),
             ],
@@ -302,7 +302,7 @@ SizedBox(height: 15,),
                     ),
                     Expanded(child: SizedBox()),
                     Text(
-                      '0 USD',
+                      '0 ${data?.accountType ==1?'EUR':data?.accountType ==2?'USD':'GBP'}',
                       // style: TextStyle(color: Colors.black54),
                     ),
             ],
@@ -320,7 +320,7 @@ SizedBox(height: 15,),
                     ),
                     const Expanded(child: SizedBox()),
                     Text(
-                      '${data?.ammount} USD',
+                      '${data?.ammount} ${data?.accountType ==1?'EUR':data?.accountType ==2?'USD':'GBP'}',
                       // style: TextStyle(color: Colors.black54),
                     ),
             ],

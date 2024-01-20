@@ -297,9 +297,11 @@ class _EditProfileState extends State<EditProfile> {
                                   int? accountType;
                                   if (_character == SingingCharacter.EUR) {
                                       debugPrint('_character 1');
+                                      accountType = 1;
                                     }
                                     if (_character == SingingCharacter.USD) {
                                       debugPrint('_character 2');
+                                      accountType = 2;
                                     }
                                   if (idController.text.isEmpty ||
                                       toController.text.isEmpty ||
@@ -365,7 +367,7 @@ class _EditProfileState extends State<EditProfile> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Edit Balance'),
+                    const Text('Edit EUR Balance'),
                     Icon(Icons.attach_money)
                   ],
                 ),
@@ -399,7 +401,7 @@ class _EditProfileState extends State<EditProfile> {
                               final SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
                               await prefs.setString(
-                                  'totalPalance', balanceController.text);
+                                  'EUR_totalPalance', balanceController.text);
                               // totalPalance = balanceController.text;
                               setState(() {});
                               showMessage(msg: 'Sucsess', sucsess: true);
@@ -430,6 +432,140 @@ class _EditProfileState extends State<EditProfile> {
               SizedBox(
                 height: 20,
               ),
+              TextButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Edit USD Balance'),
+                    Icon(Icons.attach_money)
+                  ],
+                ),
+                onPressed: () {
+                  TextEditingController balanceController =
+                      TextEditingController();
+
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      content: SizedBox(
+                        width: 500,
+                        height: 150,
+                        child: Column(
+                          children: [
+                            AppTextField(
+                                controller: balanceController,
+                                keyboardType: TextInputType.number,
+                                icon: const Icon(Icons.abc),
+                                hintText: 'Balance',
+                                label: 'Balance'),
+                          ],
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          child: const Text('Edit'),
+                          onPressed: () async {
+                            if (balanceController.text.isNotEmpty) {
+                              // Obtain shared preferences.
+                              final SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              await prefs.setString(
+                                  'USD_totalPalance', balanceController.text);
+                              // totalPalance = balanceController.text;
+                              setState(() {});
+                              showMessage(msg: 'Sucsess', sucsess: true);
+                              // ignore: use_build_context_synchronously
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const MainView(),
+                                  ));
+                            } else {
+                              showMessage(
+                                  msg: 'No value added', sucsess: false);
+                            }
+                          },
+                        ),
+                        TextButton(
+                          child: const Text('Cancel'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                      title: const Text('Edit Balance'),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20,),
+              TextButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Edit GBP Balance'),
+                    Icon(Icons.attach_money)
+                  ],
+                ),
+                onPressed: () {
+                  TextEditingController balanceController =
+                      TextEditingController();
+
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      content: SizedBox(
+                        width: 500,
+                        height: 150,
+                        child: Column(
+                          children: [
+                            AppTextField(
+                                controller: balanceController,
+                                keyboardType: TextInputType.number,
+                                icon: const Icon(Icons.abc),
+                                hintText: 'Balance',
+                                label: 'Balance'),
+                          ],
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          child: const Text('Edit'),
+                          onPressed: () async {
+                            if (balanceController.text.isNotEmpty) {
+                              // Obtain shared preferences.
+                              final SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              await prefs.setString(
+                                  'GBP_totalPalance', balanceController.text);
+                              // totalPalance = balanceController.text;
+                              setState(() {});
+                              showMessage(msg: 'Sucsess', sucsess: true);
+                              // ignore: use_build_context_synchronously
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const MainView(),
+                                  ));
+                            } else {
+                              showMessage(
+                                  msg: 'No value added', sucsess: false);
+                            }
+                          },
+                        ),
+                        TextButton(
+                          child: const Text('Cancel'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                      title: const Text('Edit Balance'),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

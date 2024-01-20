@@ -38,7 +38,9 @@ class _HomeScreenState extends State<HomeScreen> {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       isLoading = true;
       setState(() {});
-      totalPalance = prefs.getString('totalPalance');
+      eurTotalPalance = prefs.getString('EUR_totalPalance');
+      usdTotalPalance = prefs.getString('USD_totalPalance');
+      gbpTotalPalance = prefs.getString('GBP_totalPalance');
       userName =await getProfileName()??'AS';
       firstChar = getInitials(await getProfileName()??'AS'); 
       var profileImagePath = prefs.getString('profile_image');
@@ -177,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('3.418.00',style: TextStyle(
+                                    Text(index ==0 ? eurTotalPalance??'100.00':index==1?usdTotalPalance??'100.00':gbpTotalPalance??'150.00',style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                             )),
@@ -245,6 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 final reversedIndex =
                                     listData.length - 1 - index;
                                 return transactionsItem(context,
+                                accountType: listData[reversedIndex].accountType ?? 0,
                                     userName: listData[reversedIndex].userName,
                                     mony: listData[reversedIndex].ammount,
                                     sent: listData[reversedIndex].sent,
@@ -374,6 +377,7 @@ Widget radiusButton({required String? txt}) {
 
 Widget transactionsItem(BuildContext context,
     {bool? home = true,
+    required int accountType,
     required String? userName,
     required bool? sent,
     required String? mony,
@@ -387,6 +391,7 @@ Widget transactionsItem(BuildContext context,
           MaterialPageRoute(
             builder: (context) => TransDetails(
                 data: DetailsData(
+                  accountType: accountType,
                     userName: userName,
                     sent: sent,
                     ammount: mony,
@@ -440,7 +445,7 @@ Widget transactionsItem(BuildContext context,
           ),
           const Expanded(child: SizedBox()),
           Text(
-            '$mony USD',
+            '$mony ${accountType==1 ? 'EUR' : accountType ==2? 'USD' : 'GPB'}',
             style: const TextStyle(fontWeight: FontWeight.w400),
           )
         ],

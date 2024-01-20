@@ -102,7 +102,7 @@ class EuroDetails extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(10),
                 width: screenWidth * 0.90,
-                height: 550,
+                // height: 500,
                 decoration: BoxDecoration(
                     color: HexColor('#eeefea'),
                     borderRadius: BorderRadius.circular(15)),
@@ -120,7 +120,7 @@ class EuroDetails extends StatelessWidget {
                           backgroundImage: AssetImage('images/uk.png'),
                         ),
                         const SizedBox(
-                          width: 8,
+                          width: 5,
                         ),
                         const Text(
                           'Recive from a bank in the UK',
@@ -153,7 +153,7 @@ class EuroDetails extends StatelessWidget {
                           ],
                         ),
                         Expanded(child: SizedBox()),
-                        Icon(Icons.file_copy)
+                        Image.asset('images/copy.png',width: 25,height: 22,)
                       ],
                     ),
                     SizedBox(
@@ -178,7 +178,7 @@ class EuroDetails extends StatelessWidget {
                           ],
                         ),
                         Expanded(child: SizedBox()),
-                        Icon(Icons.file_copy)
+                        Image.asset('images/copy.png',width: 25,height: 22,)
                       ],
                     ),
                     SizedBox(
@@ -203,7 +203,7 @@ class EuroDetails extends StatelessWidget {
                           ],
                         ),
                         Expanded(child: SizedBox()),
-                        Icon(Icons.file_copy)
+                        Image.asset('images/copy.png',width: 25,height: 22,)
                       ],
                     ),
                     SizedBox(
@@ -231,7 +231,7 @@ class EuroDetails extends StatelessWidget {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.file_copy),
+                            Image.asset('images/copy.png',width: 25,height: 22,)
                           ],
                         )
                       ],
@@ -289,10 +289,10 @@ class EuroDetails extends StatelessWidget {
                           ],
                         ),
                         const Expanded(child: SizedBox()),
-                        const Column(
+                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.file_copy),
+                           Image.asset('images/copy.png',width: 25,height: 22,)
                           ],
                         )
                       ],
@@ -306,7 +306,7 @@ class EuroDetails extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(15),
                 width: screenWidth * 0.90,
-                height: 180,
+                // height: 180,
                 decoration: BoxDecoration(
                     color: HexColor('#eeefea'),
                     borderRadius: BorderRadius.circular(15)),
