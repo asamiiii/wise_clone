@@ -169,6 +169,9 @@ class _EditProfileState extends State<EditProfile> {
                           TextEditingController();
                       TextEditingController timeController =
                           TextEditingController();
+                      
+                      TextEditingController refController =
+                          TextEditingController();
 
                       showDialog(
                         context: context,
@@ -236,6 +239,15 @@ class _EditProfileState extends State<EditProfile> {
                                       icon: const Icon(Icons.abc),
                                       hintText: 'time',
                                       label: 'time'),
+                                      const SizedBox(
+                                    height: 10,
+                                  ),
+                                      AppTextField(
+                                        controller: refController,
+                                        keyboardType: TextInputType.number,
+                                        icon: const Icon(Icons.abc),
+                                        hintText: 'Ref number',
+                                        label: 'Ref number'),
                                   StatefulBuilder(
                                     builder: (context, setState) => Row(
                                       children: [
@@ -298,7 +310,9 @@ class _EditProfileState extends State<EditProfile> {
                                         ),
                                       ],
                                     ),
-                                  )
+                                  ),
+
+                                
                                 ],
                               ),
                             ),
@@ -341,7 +355,9 @@ class _EditProfileState extends State<EditProfile> {
                                       userName: toController.text,
                                       id: int.parse(idController.text),
                                       time: DateTime.parse(timeController.text),
-                                      accountType:accountType
+                                      accountType:accountType,
+                                      reference: int.parse(refController.text)
+
                                     ));
 
                                     Navigator.pushReplacement(

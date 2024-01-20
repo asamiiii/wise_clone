@@ -14,9 +14,11 @@ class DetailsData extends HiveObject{
   DateTime? time;
   @HiveField(5)
   int? accountType;
+  @HiveField(6)
+  int? reference;
   
 
-  DetailsData({this.id,this.userName,this.ammount,this.sent,this.time,this.accountType});
+  DetailsData({this.id,this.userName,this.ammount,this.sent,this.time,this.accountType,this.reference});
 }
 
 

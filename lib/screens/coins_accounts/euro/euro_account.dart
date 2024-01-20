@@ -304,7 +304,9 @@ class _EuroAccountState extends State<EuroAccount> {
                               mony: filteredListData[reversedIndex].ammount,
                               sent: filteredListData[reversedIndex].sent,
                               id: filteredListData[reversedIndex].id,
-                              time: filteredListData[reversedIndex].time);
+                              time: filteredListData[reversedIndex].time,
+                              ref: listData[reversedIndex].reference
+                              );
                         },
                         separatorBuilder: (context, index) =>
                             const SizedBox(height: 10),

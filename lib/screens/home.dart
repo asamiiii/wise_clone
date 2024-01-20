@@ -236,10 +236,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Icon(Icons.assured_workload,size: 13,color: Colors.grey,),
                                       SizedBox(width: 5,),
                                       SizedBox(
-                                        width: 40,
+                                        width: 47,
                                         child: Text(' ${index == 0? eurAccountNumber:index==1?usdAccountNumber:gbpAccountNumber}',style: TextStyle(color: Colors.grey,fontSize: 10,fontWeight: FontWeight.w700),maxLines: 1,overflow: TextOverflow.ellipsis,textDirection: TextDirection.rtl,))
                                     ],),
-                                    Text('****',style: TextStyle(
+                                    Text(index ==0 ? eurTotalPalance??'100.00':index==1?usdTotalPalance??'100.00':gbpTotalPalance??'150.00',style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
                             )),
@@ -312,7 +312,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     mony: listData[reversedIndex].ammount,
                                     sent: listData[reversedIndex].sent,
                                     id: listData[reversedIndex].id,
-                                    time: listData[reversedIndex].time);
+                                    time: listData[reversedIndex].time,
+                                    ref: listData[reversedIndex].reference
+                                    );
                               },
                               separatorBuilder: (context, index) =>
                                   const SizedBox(height: 10),
@@ -448,7 +450,9 @@ Widget transactionsItem(BuildContext context,
     required bool? sent,
     required String? mony,
     required int? id,
-    required DateTime? time}) {
+    required DateTime? time,
+    required int? ref
+    }) {
   //? Transactions Section
   return GestureDetector(
     onTap: () {
@@ -462,7 +466,9 @@ Widget transactionsItem(BuildContext context,
                     sent: sent,
                     ammount: mony,
                     id: id,
-                    time: time)),
+                    time: time,
+                    reference: ref
+                    )),
           ));
     },
     child: Dismissible(
