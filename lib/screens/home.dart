@@ -2,6 +2,7 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:hive/hive.dart';
@@ -200,8 +201,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Stack(
                               children: [
                                 Positioned(
-                                  top: 15,
-                                  left: 15,
+                                  top: 15.h,
+                                  left: 15.w,
                                 child: CircleAvatar(
                                   radius: screenWidth*0.08,
                                   backgroundImage: AssetImage('images/flag$index.png'),
@@ -209,8 +210,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                           
                               Positioned(
-                                top: 30,
-                                left: 80,
+                                top: 30.h,
+                                left: 80.w,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -226,8 +227,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
 
                               Positioned(
-                                bottom: 10,
-                                left: 15,
+                                bottom: 10.h,
+                                left: 15.w,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -313,7 +314,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     sent: listData[reversedIndex].sent,
                                     id: listData[reversedIndex].id,
                                     time: listData[reversedIndex].time,
-                                    ref: listData[reversedIndex].reference
+                                    ref: listData[reversedIndex].reference,
+                                     bankCode: listData[reversedIndex].bankCode
                                     );
                               },
                               separatorBuilder: (context, index) =>
@@ -451,7 +453,8 @@ Widget transactionsItem(BuildContext context,
     required String? mony,
     required int? id,
     required DateTime? time,
-    required int? ref
+    required int? ref,
+    required String? bankCode
     }) {
   //? Transactions Section
   return GestureDetector(
@@ -467,7 +470,8 @@ Widget transactionsItem(BuildContext context,
                     ammount: mony,
                     id: id,
                     time: time,
-                    reference: ref
+                    reference: ref,
+                    bankCode: bankCode
                     )),
           ));
     },

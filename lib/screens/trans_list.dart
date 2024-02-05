@@ -77,7 +77,8 @@ class _TransactionsListState extends State<TransactionsList> {
                         userName: listData[reversedIndex].userName,
                         sent: listData[reversedIndex].sent,
                         mony: listData[reversedIndex].ammount,
-                        ref: listData[reversedIndex].reference
+                        ref: listData[reversedIndex].reference,
+                        bankCode: listData[reversedIndex].bankCode,
                         );
                   },
                   separatorBuilder: (context, index) => const SizedBox(

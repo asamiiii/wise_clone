@@ -47,6 +47,7 @@ dependencies:
   fluttertoast: ^8.2.4
   shared_preferences: ^2.2.2
   path_provider: ^2.1.1
+  flutter_screenutil: ^5.9.0
   # dotted_separator: ^1.0.6
 
 dev_dependencies:

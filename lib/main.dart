@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:hive/hive.dart';
@@ -36,14 +37,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     fToast?.init(context);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Wise',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-        useMaterial3: true,
-      ),
-      home: const SplashScreen(),
+    return ScreenUtilInit(
+      designSize: const Size(360, 690),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      // Use builder only if you need to use library outside ScreenUtilInit context
+      builder: (context, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Wise',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+            useMaterial3: true,
+          ),
+          home: const SplashScreen(),
+        );
+      },
     );
   }
 }
@@ -92,13 +101,13 @@ class _MyHomePageState extends State<SplashScreen> {
   }
 }
 
-showMessage({String? msg,bool? sucsess}) {
+showMessage({String? msg, bool? sucsess}) {
   Fluttertoast.showToast(
       msg: msg ?? '',
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
-      backgroundColor: sucsess==true?Colors.green: Colors.red,
+      backgroundColor: sucsess == true ? Colors.green : Colors.red,
       textColor: Colors.white,
       fontSize: 16.0);
 }

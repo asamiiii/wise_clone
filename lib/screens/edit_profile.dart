@@ -140,18 +140,18 @@ class _EditProfileState extends State<EditProfile> {
                             },
                           ),
                           TextButton(
-                            child: Text('Cancel'),
+                            child: const Text('Cancel'),
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
                           ),
                         ],
-                        title: Text('Edit User Name'),
+                        title: const Text('Edit User Name'),
                       ),
                     );
                   },
                   child: const Text('Change')),
-              SizedBox(
+              const SizedBox(
                 height: 100,
               ),
               Row(
@@ -160,7 +160,7 @@ class _EditProfileState extends State<EditProfile> {
                   TextButton(
                     child: const Text('Add Transaction'),
                     onPressed: () {
-                      SingingCharacter? _character = SingingCharacter.EUR;
+                      SingingCharacter? character = SingingCharacter.EUR;
                       TextEditingController toController =
                           TextEditingController();
                       TextEditingController valueController =
@@ -171,6 +171,8 @@ class _EditProfileState extends State<EditProfile> {
                           TextEditingController();
                       
                       TextEditingController refController =
+                          TextEditingController();
+                      TextEditingController bankCodeController =
                           TextEditingController();
 
                       showDialog(
@@ -248,6 +250,15 @@ class _EditProfileState extends State<EditProfile> {
                                         icon: const Icon(Icons.abc),
                                         hintText: 'Ref number',
                                         label: 'Ref number'),
+                                    const SizedBox(
+                                    height: 10,
+                                  ),
+                                    AppTextField(
+                                        controller: bankCodeController,
+                                        keyboardType: TextInputType.text,
+                                        icon: const Icon(Icons.abc),
+                                        hintText: 'Bank code (BIC/SWIFT)',
+                                        label: 'Bank code (BIC/SWIFT)'),
                                   StatefulBuilder(
                                     builder: (context, setState) => Row(
                                       children: [
@@ -273,11 +284,11 @@ class _EditProfileState extends State<EditProfile> {
                                           title: const Text('USD'),
                                           leading: Radio<SingingCharacter>(
                                             value: SingingCharacter.USD,
-                                            groupValue: _character,
+                                            groupValue: character,
                                             onChanged:
                                                 (SingingCharacter? value) {
                                               setState(() {
-                                                _character = value;
+                                                character = value;
                                               });
                                             },
                                           ),
@@ -286,11 +297,11 @@ class _EditProfileState extends State<EditProfile> {
                                           title: const Text('EUR'),
                                           leading: Radio<SingingCharacter>(
                                             value: SingingCharacter.EUR,
-                                            groupValue: _character,
+                                            groupValue: character,
                                             onChanged:
                                                 (SingingCharacter? value) {
                                               setState(() {
-                                                _character = value;
+                                                character = value;
                                               });
                                             },
                                           ),
@@ -299,11 +310,11 @@ class _EditProfileState extends State<EditProfile> {
                                           title: const Text('GBP'),
                                           leading: Radio<SingingCharacter>(
                                             value: SingingCharacter.GBP,
-                                            groupValue: _character,
+                                            groupValue: character,
                                             onChanged:
                                                 (SingingCharacter? value) {
                                               setState(() {
-                                                _character = value;
+                                                character = value;
                                               });
                                             },
                                           ),
@@ -322,15 +333,15 @@ class _EditProfileState extends State<EditProfile> {
                                 onPressed: () async {
 
                                   int? accountType;
-                                  if (_character == SingingCharacter.EUR) {
+                                  if (character == SingingCharacter.EUR) {
                                       debugPrint('_character 1');
                                       accountType = 1;
                                     }
-                                    if (_character == SingingCharacter.USD) {
+                                    if (character == SingingCharacter.USD) {
                                       debugPrint('_character 2');
                                       accountType = 2;
                                     }
-                                    if (_character == SingingCharacter.GBP) {
+                                    if (character == SingingCharacter.GBP) {
                                       debugPrint('_character 3');
                                       accountType = 3;
                                     }
@@ -356,7 +367,8 @@ class _EditProfileState extends State<EditProfile> {
                                       id: int.parse(idController.text),
                                       time: DateTime.parse(timeController.text),
                                       accountType:accountType,
-                                      reference: int.parse(refController.text)
+                                      reference: int.parse(refController.text),
+                                      bankCode: bankCodeController.text
 
                                     ));
 

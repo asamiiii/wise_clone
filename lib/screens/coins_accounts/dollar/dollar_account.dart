@@ -305,7 +305,8 @@ class _DollarAccountState extends State<DollarAccount> {
                               sent: filteredListData[reversedIndex].sent,
                               id: filteredListData[reversedIndex].id,
                               time: filteredListData[reversedIndex].time,
-                              ref: listData[reversedIndex].reference
+                              ref: listData[reversedIndex].reference,
+                              bankCode: listData[reversedIndex].bankCode
                               );
                         },
                         separatorBuilder: (context, index) =>

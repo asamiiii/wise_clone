@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -133,11 +134,13 @@ class _TransDetailsState extends State<TransDetails> {
                                 CircleAvatar(
                                     radius: 20,
                                     backgroundColor: Colors.grey[400],
-                                    child: widget.data?.sent == true? Image.asset(
-                                      'images/cat.png',
-                                      width: 15,
-                                      height: 15,
-                                    ):const Icon(Icons.add)),
+                                    child: widget.data?.sent == true
+                                        ? Image.asset(
+                                            'images/cat.png',
+                                            width: 15,
+                                            height: 15,
+                                          )
+                                        : const Icon(Icons.add)),
                                 const SizedBox(
                                   width: 5,
                                 ),
@@ -433,7 +436,7 @@ Widget detailsSection({DetailsData? data}) {
           SizedBox(
             height: 10,
           ),
-          data?.sent == false
+          data.sent == false
               ? Row(
                   children: [
                     const Text(
@@ -448,7 +451,7 @@ Widget detailsSection({DetailsData? data}) {
                   ],
                 )
               : const SizedBox(),
-           const SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -459,14 +462,89 @@ Widget detailsSection({DetailsData? data}) {
               ),
               const Expanded(child: SizedBox()),
               Text(
-                '#${data?.id}',
+                '#${data.id}',
                 // style: TextStyle(color: Colors.black54),
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
+          data.sent == true
+              ? Text(
+                  maxLines: 2,
+                  style:
+                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                  // textAlign: TextAlign.justify,
+                  overflow: TextOverflow.ellipsis,
+                  'Bank details of ${data.userName}',
+                )
+              : const SizedBox(),
+          data.sent == true
+              ? const SizedBox(
+                  height: 10,
+                )
+              : const SizedBox(),
+          data.sent == true
+              ? const Row(
+                  children: [
+                    Text(
+                      'Recipient type',
+                      // style: TextStyle(color: Colors.black54),
+                    ),
+                    Expanded(child: SizedBox()),
+                    Text(
+                      'PRIVATE',
+                      // style: TextStyle(color: Colors.black54),
+                    ),
+                  ],
+                )
+              : const SizedBox(),
+          data.sent == true
+              ? const SizedBox(
+                  height: 10,
+                )
+              : const SizedBox(),
+          data.sent == true
+              ? Row(
+                  children: [
+                    const Text(
+                      'Bank code (BIC/SWIFT)',
+                      // style: TextStyle(color: Colors.black54),
+                    ),
+                    const Expanded(child: SizedBox()),
+                    Text(
+                      data.bankCode ?? 'Un known',
+                      // style: TextStyle(color: Colors.black54),
+                    ),
+                  ],
+                )
+              : const SizedBox(),
+          data.sent == true
+              ? const SizedBox(
+                  height: 10,
+                )
+              : const SizedBox(),
+          data.sent == true
+              ? const Row(
+                  children: [
+                    Text(
+                      'IBAN',
+                      // style: TextStyle(color: Colors.black54),
+                    ),
+                    Expanded(child: SizedBox()),
+                    Text(
+                      '687678 767867 767867 676 x',
+                      // style: TextStyle(color: Colors.black54),
+                    ),
+                  ],
+                )
+              : const SizedBox(),
+          data.sent == true
+              ? const SizedBox(
+                  height: 20,
+                )
+              : const SizedBox(),
           Container(
             height: 50,
             padding:
