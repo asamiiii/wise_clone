@@ -79,6 +79,7 @@ class _TransactionsListState extends State<TransactionsList> {
                         mony: listData[reversedIndex].ammount,
                         ref: listData[reversedIndex].reference,
                         bankCode: listData[reversedIndex].bankCode,
+                        iBAN: listData[reversedIndex].iBan
                         );
                   },
                   separatorBuilder: (context, index) => const SizedBox(

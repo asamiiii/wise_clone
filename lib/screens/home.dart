@@ -315,7 +315,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     id: listData[reversedIndex].id,
                                     time: listData[reversedIndex].time,
                                     ref: listData[reversedIndex].reference,
-                                     bankCode: listData[reversedIndex].bankCode
+                                     bankCode: listData[reversedIndex].bankCode,
+                                     iBAN: listData[reversedIndex].iBan
                                     );
                               },
                               separatorBuilder: (context, index) =>
@@ -454,15 +455,18 @@ Widget transactionsItem(BuildContext context,
     required int? id,
     required DateTime? time,
     required int? ref,
-    required String? bankCode
+    required String? bankCode,
+    required String? iBAN
     }) {
   //? Transactions Section
   return GestureDetector(
-    onTap: () {
+    onTap: ()async {
+      String? iBan = await CacheHelper.getStringFromCache(key: accountType==1 ? 'EUR_IBAN':accountType==2?'USD_IBAN':'GBP_IBAN');
       Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => TransDetails(
+              iBan: iBan,
                 data: DetailsData(
                   accountType: accountType,
                     userName: userName,
@@ -471,7 +475,8 @@ Widget transactionsItem(BuildContext context,
                     id: id,
                     time: time,
                     reference: ref,
-                    bankCode: bankCode
+                    bankCode: bankCode,
+                    iBan: iBAN
                     )),
           ));
     },

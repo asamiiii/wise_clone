@@ -13,7 +13,7 @@ import 'package:wise_clone/screens/settings.dart';
 import 'package:wise_clone/screens/trans_list.dart';
 import 'package:wise_clone/screens/widgets.dart';
 
-enum SingingCharacter { EUR, USD ,GBP}
+enum SingingCharacter { EUR, USD, GBP }
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -169,10 +169,13 @@ class _EditProfileState extends State<EditProfile> {
                           TextEditingController();
                       TextEditingController timeController =
                           TextEditingController();
-                      
+
                       TextEditingController refController =
                           TextEditingController();
                       TextEditingController bankCodeController =
+                          TextEditingController();
+
+                      TextEditingController iBanCodeController =
                           TextEditingController();
 
                       showDialog(
@@ -241,24 +244,33 @@ class _EditProfileState extends State<EditProfile> {
                                       icon: const Icon(Icons.abc),
                                       hintText: 'time',
                                       label: 'time'),
-                                      const SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
-                                      AppTextField(
-                                        controller: refController,
-                                        keyboardType: TextInputType.number,
-                                        icon: const Icon(Icons.abc),
-                                        hintText: 'Ref number',
-                                        label: 'Ref number'),
-                                    const SizedBox(
+                                  AppTextField(
+                                      controller: refController,
+                                      keyboardType: TextInputType.number,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'Ref number',
+                                      label: 'Ref number'),
+                                  const SizedBox(
                                     height: 10,
                                   ),
-                                    AppTextField(
-                                        controller: bankCodeController,
-                                        keyboardType: TextInputType.text,
-                                        icon: const Icon(Icons.abc),
-                                        hintText: 'Bank code (BIC/SWIFT)',
-                                        label: 'Bank code (BIC/SWIFT)'),
+                                  AppTextField(
+                                      controller: bankCodeController,
+                                      keyboardType: TextInputType.text,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'Bank code (BIC/SWIFT)',
+                                      label: 'Bank code (BIC/SWIFT)'),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  AppTextField(
+                                      controller: iBanCodeController,
+                                      keyboardType: TextInputType.text,
+                                      icon: const Icon(Icons.abc),
+                                      hintText: 'IBAN',
+                                      label: 'IBAN'),
                                   StatefulBuilder(
                                     builder: (context, setState) => Row(
                                       children: [
@@ -322,8 +334,6 @@ class _EditProfileState extends State<EditProfile> {
                                       ],
                                     ),
                                   ),
-
-                                
                                 ],
                               ),
                             ),
@@ -331,25 +341,24 @@ class _EditProfileState extends State<EditProfile> {
                               TextButton(
                                 child: const Text('Send'),
                                 onPressed: () async {
-
                                   int? accountType;
                                   if (character == SingingCharacter.EUR) {
-                                      debugPrint('_character 1');
-                                      accountType = 1;
-                                    }
-                                    if (character == SingingCharacter.USD) {
-                                      debugPrint('_character 2');
-                                      accountType = 2;
-                                    }
-                                    if (character == SingingCharacter.GBP) {
-                                      debugPrint('_character 3');
-                                      accountType = 3;
-                                    }
+                                    debugPrint('_character 1');
+                                    accountType = 1;
+                                  }
+                                  if (character == SingingCharacter.USD) {
+                                    debugPrint('_character 2');
+                                    accountType = 2;
+                                  }
+                                  if (character == SingingCharacter.GBP) {
+                                    debugPrint('_character 3');
+                                    accountType = 3;
+                                  }
                                   if (idController.text.isEmpty ||
                                       toController.text.isEmpty ||
                                       valueController.text.isEmpty ||
-                                      timeController.text.isEmpty||
-                                      accountType==null) {
+                                      timeController.text.isEmpty ||
+                                      accountType == null) {
                                     Fluttertoast.showToast(
                                         msg: "Please Fill all data",
                                         toastLength: Toast.LENGTH_SHORT,
@@ -359,18 +368,19 @@ class _EditProfileState extends State<EditProfile> {
                                         textColor: Colors.white,
                                         fontSize: 16.0);
                                   } else {
-                                    
                                     await addItemToLocal(DetailsData(
-                                      ammount: valueController.text,
-                                      sent: sent,
-                                      userName: toController.text,
-                                      id: int.parse(idController.text),
-                                      time: DateTime.parse(timeController.text),
-                                      accountType:accountType,
-                                      reference: int.parse(refController.text),
-                                      bankCode: bankCodeController.text
-
-                                    ));
+                                        ammount: valueController.text,
+                                        sent: sent,
+                                        userName: toController.text,
+                                        id: int.parse(idController.text),
+                                        time:
+                                            DateTime.parse(timeController.text),
+                                        accountType: accountType,
+                                        reference:
+                                            int.parse(refController.text),
+                                        bankCode: bankCodeController.text,
+                                        iBan: iBanCodeController.text
+                                        ));
 
                                     Navigator.pushReplacement(
                                         context,
@@ -543,7 +553,9 @@ class _EditProfileState extends State<EditProfile> {
                   );
                 },
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               TextButton(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -610,7 +622,9 @@ class _EditProfileState extends State<EditProfile> {
                   );
                 },
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -710,7 +724,12 @@ class _EditProfileState extends State<EditProfile> {
                                         backgroundColor: Colors.green,
                                         textColor: Colors.white,
                                         fontSize: 16.0);
-                                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const MainView(),));
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MainView(),
+                                        ));
                                   }
                                 },
                               ),
@@ -829,7 +848,12 @@ class _EditProfileState extends State<EditProfile> {
                                         backgroundColor: Colors.green,
                                         textColor: Colors.white,
                                         fontSize: 16.0);
-                                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const MainView(),));
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MainView(),
+                                        ));
                                   }
                                 },
                               ),
@@ -849,7 +873,6 @@ class _EditProfileState extends State<EditProfile> {
                   Icon(Icons.send)
                 ],
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -949,7 +972,12 @@ class _EditProfileState extends State<EditProfile> {
                                         backgroundColor: Colors.green,
                                         textColor: Colors.white,
                                         fontSize: 16.0);
-                                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const MainView(),));
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MainView(),
+                                        ));
                                   }
                                 },
                               ),

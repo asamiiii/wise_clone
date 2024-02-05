@@ -67,25 +67,69 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<SplashScreen> {
+  
   @override
   void initState() {
-    init();
+    WidgetsBinding.instance.addPostFrameCallback((_)async {
+    await checkFirstSeen();
+  });
+   
     super.initState();
   }
 
-  init() async {
-    checkFirstSeen();
-  }
 
-  Future checkFirstSeen() async {
-    await Future.delayed(const Duration(seconds: 1));
-    // ignore: use_build_context_synchronously
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const MainView(),
-        ));
-  }
+Future<void> checkFirstSeen() async {
+  bool? isAuth=false;
+  await showModalBottomSheet(
+    isScrollControlled: true,
+    context: context,
+    builder: (context) {
+      return StatefulBuilder(
+        builder:(context, setState) =>  Container(
+          height: 250.h,
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: [
+              SizedBox(height: 10,),
+              Text('Wise',style: TextStyle(fontSize: 20),),
+              SizedBox(height: 10,),
+              Text('Use your fingerprint to continue',),
+              SizedBox(height: 10,),
+              Text('Unlock to login',),
+              SizedBox(height: 10,),
+              TextButton(
+                onPressed: () async{
+                  setState(() {});
+                  isAuth=true;
+                  await Future.delayed(Duration(seconds: 1));
+                  Navigator.pop(context); // Close the modal sheet
+                  openMainView(); // Open the main view
+                },
+                child:isAuth==false? Image.asset('images/fp.png',width: 50.w,height: 50.h,):Image.asset('images/check.png',width: 50.w,height: 50.h,),
+              ),
+              Expanded(child: SizedBox()),
+              Text('Touch the fingerprint sensor'),
+              Row(
+                children: [
+                  TextButton(onPressed: (){}, child: Text('Use PIN')),
+                ],
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+void openMainView() {
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (context) => MainView(),
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {

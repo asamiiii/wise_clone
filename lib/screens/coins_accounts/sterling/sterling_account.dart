@@ -306,7 +306,8 @@ class _SterlingAccountState extends State<SterlingAccount> {
                               id: filteredListData[reversedIndex].id,
                               time: filteredListData[reversedIndex].time,
                               ref: listData[reversedIndex].reference,
-                              bankCode: listData[reversedIndex].bankCode
+                              bankCode: listData[reversedIndex].bankCode,
+                              iBAN: listData[reversedIndex].iBan
                               );
                         },
                         separatorBuilder: (context, index) =>

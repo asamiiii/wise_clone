@@ -25,13 +25,14 @@ class DetailsDataAdapter extends TypeAdapter<DetailsData> {
       accountType: fields[5] as int?,
       reference: fields[6] as int?,
       bankCode: fields[7] as String?,
+      iBan: fields[8] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, DetailsData obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +48,9 @@ class DetailsDataAdapter extends TypeAdapter<DetailsData> {
       ..writeByte(6)
       ..write(obj.reference)
       ..writeByte(7)
-      ..write(obj.bankCode);
+      ..write(obj.bankCode)
+      ..writeByte(8)
+      ..write(obj.iBan);
   }
 
   @override

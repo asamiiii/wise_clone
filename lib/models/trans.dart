@@ -18,9 +18,11 @@ class DetailsData extends HiveObject{
   int? reference;
   @HiveField(7)
   String? bankCode;
+  @HiveField(8)
+  String? iBan;
 
 
-  DetailsData({this.id,this.userName,this.ammount,this.sent,this.time,this.accountType,this.reference,this.bankCode});
+  DetailsData({this.id,this.userName,this.ammount,this.sent,this.time,this.accountType,this.reference,this.bankCode,this.iBan});
 }
 
 

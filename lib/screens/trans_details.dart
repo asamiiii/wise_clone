@@ -9,7 +9,8 @@ import 'package:wise_clone/models/trans.dart';
 
 // int? serialNumb = 0;
 class TransDetails extends StatefulWidget {
-  TransDetails({super.key, this.data});
+  TransDetails({super.key, this.data,this.iBan});
+  String? iBan;
   DetailsData? data;
   @override
   State<TransDetails> createState() => _TransDetailsState();
@@ -23,6 +24,7 @@ class _TransDetailsState extends State<TransDetails> {
     if (widget.data?.sent == false) {
       currentIndex = 1;
     }
+    
     debugPrint('id : ${widget.data?.time}');
     super.initState();
   }
@@ -31,7 +33,7 @@ class _TransDetailsState extends State<TransDetails> {
   Widget build(BuildContext context) {
     List<Widget> sectionsList = [
       updatesSection(widget.data!.time!, widget.data!),
-      detailsSection(data: widget.data)
+      detailsSection(data: widget.data,iBAN: widget.iBan)
     ];
     return Scaffold(
       backgroundColor: Colors.white,
@@ -313,7 +315,7 @@ Widget updatesSection(DateTime time, DetailsData data) {
   );
 }
 
-Widget detailsSection({DetailsData? data}) {
+Widget detailsSection({DetailsData? data,String? iBAN}){
   // String inputDateTimeString = '2024-01-20 20:23:00.000';
   DateTime inputDateTime = DateTime.parse(data!.time.toString());
 
@@ -526,7 +528,7 @@ Widget detailsSection({DetailsData? data}) {
                 )
               : const SizedBox(),
           data.sent == true
-              ? const Row(
+              ?  Row(
                   children: [
                     Text(
                       'IBAN',
@@ -534,7 +536,7 @@ Widget detailsSection({DetailsData? data}) {
                     ),
                     Expanded(child: SizedBox()),
                     Text(
-                      '687678 767867 767867 676 x',
+                      data.iBan ??'Un Known',
                       // style: TextStyle(color: Colors.black54),
                     ),
                   ],

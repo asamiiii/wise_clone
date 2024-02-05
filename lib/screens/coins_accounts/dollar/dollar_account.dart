@@ -91,10 +91,10 @@ class _DollarAccountState extends State<DollarAccount> {
               ),
               GestureDetector(
                 onTap: () async{
-                  String? holder = await CacheHelper.getStringFromCache(key: 'USD_holder')??'Un Known' ;
-                  String? sortCode =await CacheHelper.getStringFromCache(key: 'USD_sort_code')??'Un Known';
-                  String? accountNumber =await  CacheHelper.getStringFromCache(key: 'USD_account_number')??'Un Known';
-                  String? iBAN = await CacheHelper.getStringFromCache(key: 'USD_IBAN')??'Un Known';
+                  String? holder = await CacheHelper.getStringFromCache(key: 'USD_holder') ?? 'Un Known' ;
+                  String? sortCode =await CacheHelper.getStringFromCache(key: 'USD_sort_code') ?? 'Un Known';
+                  String? accountNumber =await  CacheHelper.getStringFromCache(key: 'USD_account_number') ?? 'Un Known';
+                  String? iBAN = await CacheHelper.getStringFromCache(key: 'USD_IBAN') ?? 'Un Known';
                    showModalBottomSheet(
                     isScrollControlled: true,
                     context: context, builder: (context) => Container(
@@ -306,7 +306,9 @@ class _DollarAccountState extends State<DollarAccount> {
                               id: filteredListData[reversedIndex].id,
                               time: filteredListData[reversedIndex].time,
                               ref: listData[reversedIndex].reference,
-                              bankCode: listData[reversedIndex].bankCode
+                              bankCode: listData[reversedIndex].bankCode,
+                              iBAN: listData[reversedIndex].iBan,
+                              
                               );
                         },
                         separatorBuilder: (context, index) =>
