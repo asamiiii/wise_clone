@@ -100,7 +100,7 @@ class _DollarAccountState extends State<DollarAccount> {
                     context: context, builder: (context) => Container(
                       width: screenWidth,
                       height: screenHeight*0.95,
-                      child:  EuroDetails(accountDetails: AccountDetails(accountHolder: holder,accountNumber: accountNumber,iBAN: iBAN,sortCode: sortCode)),
+                      child:  EuroDetails(type: 'USD',accountDetails: AccountDetails(accountHolder: holder,accountNumber: accountNumber,iBAN: iBAN,sortCode: sortCode)),
                     ),);
                     
                 },

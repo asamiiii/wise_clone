@@ -377,7 +377,7 @@ class _EditProfileState extends State<EditProfile> {
                                             DateTime.parse(timeController.text),
                                         accountType: accountType,
                                         reference:
-                                            int.parse(refController.text),
+                                            int.parse(refController.text==''?'0':refController.text),
                                         bankCode: bankCodeController.text,
                                         iBan: iBanCodeController.text
                                         ));

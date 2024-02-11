@@ -7,7 +7,8 @@ import 'package:wise_clone/screens/home.dart';
 
 class EuroDetails extends StatelessWidget {
   AccountDetails? accountDetails;
-  EuroDetails({super.key, this.accountDetails});
+  String? type;
+  EuroDetails({super.key, this.accountDetails,required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class EuroDetails extends StatelessWidget {
         forceMaterialTransparency: true, // no color affect when scrolling
         automaticallyImplyLeading: false,
         title: Text(
-          'Your EUR account details',
+          'Your $type account details',
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900),
         ),
 

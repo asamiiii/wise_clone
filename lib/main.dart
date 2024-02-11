@@ -90,13 +90,13 @@ Future<void> checkFirstSeen() async {
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
-              SizedBox(height: 10,),
-              Text('Wise',style: TextStyle(fontSize: 20),),
-              SizedBox(height: 10,),
-              Text('Use your fingerprint to continue',),
-              SizedBox(height: 10,),
-              Text('Unlock to login',),
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
+              const Text('Wise',style: TextStyle(fontSize: 20),),
+              const SizedBox(height: 10,),
+              const Text('Use your fingerprint to continue',),
+              const SizedBox(height: 10,),
+              const Text('Unlock to login',),
+              const SizedBox(height: 10,),
               TextButton(
                 onPressed: () async{
                   setState(() {});
