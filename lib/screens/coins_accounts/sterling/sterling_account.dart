@@ -83,7 +83,7 @@ class _SterlingAccountState extends State<SterlingAccount> {
                 height: screenHeight * 0.01,
               ),
               Text(
-                'EUR balance',
+                'GBP balance',
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
               ),
               SizedBox(

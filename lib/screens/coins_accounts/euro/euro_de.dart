@@ -116,15 +116,15 @@ class EuroDetails extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        const CircleAvatar(
+                         CircleAvatar(
                           radius: 15,
-                          backgroundImage: AssetImage('images/uk.png'),
+                          backgroundImage: AssetImage(type=='EUR'?'images/flag0.png':type=='USD'?'images/flag1.png':'images/uk.png')
                         ),
                         const SizedBox(
                           width: 5,
                         ),
-                        const Text(
-                          'Recive from a bank in the UK',
+                         Text(
+                          'Recive from a bank in the ${type=='EUR'?'Italy':type=='USD'?'USA':'UK'}',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 13),
                         ),
@@ -272,19 +272,19 @@ class EuroDetails extends StatelessWidget {
                               ],
                             ),
                             Text(
-                              '56 Shoreditch High Street',
+                              type=='EUR'?'Via Valpantena 113':type=='USA'?'2771 Oak Lane': '56 Shoreditch High Street',
                               style: TextStyle(fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              'London',
+                               type=='EUR'?'Salerno':type=='USA'?' Pennsylvania': 'London',
                               style: TextStyle(fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              'E1 6JJ',
+                             type=='EUR'?'Atrani':type=='USA'?'Oley': 'E1 6JJ',
                               style: TextStyle(fontWeight: FontWeight.w600),
                             ),
                             Text(
-                              'United Kingdom',
+                               type=='EUR'?'Italy':type=='USD'?'United states': 'United Kingdom',
                               style: TextStyle(fontWeight: FontWeight.w600),
                             ),
                           ],
